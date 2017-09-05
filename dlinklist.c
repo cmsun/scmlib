@@ -7,7 +7,7 @@
 *  @FileName       : dlinklist.c
 *  @Author         : scm 351721714@qq.com
 *  @Create         : 2017/06/18 01:35:31
-*  @Last Modified  : 2017/07/18 15:58:55
+*  @Last Modified  : 2017/09/05 18:22:14
 ********************************************************************************
 */
 
@@ -538,15 +538,15 @@ static inline void dllist_append_node(DLLNode **curr, DLLNode **next)
 //中间分割链表，并返回分割出的新链表
 static DLLNode *dllist_middle_split(DLLNode *head)
 {
-    if(head == NULL || head->next == NULL)
-        return NULL;
-
+    if(head == NULL) return NULL;
     DLLNode *slow = head, *fast = head;
-    while(fast != NULL)
+    while(fast != NULL && fast->next != NULL)
     {
-        if((fast = fast->next) != NULL)
-            if((fast = fast->next) != NULL)
-                slow = slow->next;
+        fast = fast->next->next;
+        //当链表只有两个节点时，最终slow应该指向第一个节点。
+        //这样就能将只有两个节点的链表拆分成两个分别有一个节点的链表。
+        if(fast != NULL)
+            slow = slow->next;
     }
     DLLNode *newlist = slow->next;
     newlist->prev = NULL;

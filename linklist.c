@@ -7,7 +7,7 @@
 *  @FileName       : linklist.c
 *  @Author         : scm 351721714@qq.com
 *  @Create         : 2017/05/12 14:35:54
-*  @Last Modified  : 2017/07/18 16:04:42
+*  @Last Modified  : 2017/09/05 18:20:59
 ********************************************************************************
 */
 
@@ -644,14 +644,15 @@ void llist_quick_sort(LinkList *llist, int (*compare)(const void*, const void*))
 //中间分割链表，并返回分割出的新链表
 static LLNode *llist_middle_split(LLNode *head)
 {
-    if(head == NULL || head->next == NULL)
-        return NULL;
+    if(head == NULL) return NULL;
     LLNode *slow = head, *fast = head;
-    while(fast != NULL)
+    while(fast != NULL && fast->next != NULL)
     {
-        if((fast = fast->next) != NULL)
-            if((fast = fast->next) != NULL)
-                slow = slow->next;
+        fast = fast->next->next;
+        //当链表只有两个节点时，最终slow应该指向第一个节点。
+        //这样就能将只有两个节点的链表拆分成两个分别有一个节点的链表。
+        if(fast != NULL)
+            slow = slow->next;
     }
     LLNode *newlist = slow->next;
     slow->next = NULL;
