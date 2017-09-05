@@ -7,7 +7,7 @@
 *  @FileName       : linklist.c
 *  @Author         : scm 351721714@qq.com
 *  @Create         : 2017/05/12 14:35:54
-*  @Last Modified  : 2017/09/05 18:20:59
+*  @Last Modified  : 2017/09/05 20:27:37
 ********************************************************************************
 */
 
@@ -524,13 +524,13 @@ static LLNode *llist_middle(LLNode *left, LLNode *right)
 {
     LLNode *slow = left, *fast = left;
 
+    //如果有两个节点，则返回第1个节点
     /*
-     * //如果有两个节点，则返回第1个节点
-     * while(fast != right)
+     * while(fast != right && fast->next != right)
      * {
-     *     if((fast = fast->next) != right)
-     *         if((fast = fast->next) != right)
-     *             slow = slow->next;
+     *     fast = fast->next->next;
+     *     if(fast != NULL)
+     *         slow = left->next;
      * }
      * return slow;
      */
@@ -587,60 +587,6 @@ void llist_quick_sort(LinkList *llist, int (*compare)(const void*, const void*))
     llist_qsort_recursive(head, tail, compare);
 }
 
-/*
- * static inline LLNode *llist_forward(LLNode *node, int steps)
- * {
- *     while(node != NULL && steps--)
- *         node = node->next;
- *     return node;
- * }
- * 
- * static inline void llist_node_append_node(LLNode **curr, LLNode **next)
- * {
- *     (*curr)->next = *next;
- *     *curr = *next;
- *     *next = (*next)->next;
- * }
- * 
- * static LLNode *llist_merge(LinkList *llist, int k, int (*compare)(const void*, const void*))
- * {
- *     LLNode mergeHead;
- *     LLNode *mergeTail = &mergeHead;
- *     LLNode *i = llist->head;
- *     while(i != NULL) 
- *     {
- *         LLNode *i_end = llist_forward(i, k);
- *         LLNode *j = i_end;
- *         LLNode *j_end = llist_forward(j, k);
- *         while(i != i_end && j != j_end)
- *         {
- *             if(compare(i->data, j->data))
- *                 llist_node_append_node(&mergeTail, &i);
- *             else
- *                 llist_node_append_node(&mergeTail, &j);
- *         }
- *         while(i != i_end)
- *             llist_node_append_node(&mergeTail, &i);
- *         while(j != j_end)
- *             llist_node_append_node(&mergeTail, &j);
- *         i = j_end;
- *     }
- *     mergeTail->next = NULL;
- *     return mergeHead.next;
- * }
- * 
- * void llist_merge_sort(LinkList *llist, int (*compare)(const void*, const void*))
- * {
- *     if(llist != NULL && compare != NULL)
- *     {
- *         for(int k = 1; k < llist_length(llist); k *= 2)
- *         {
- *             llist->head = llist_merge(llist, k, compare);
- *         }
- *     }
- * }
- */
-
 //中间分割链表，并返回分割出的新链表
 static LLNode *llist_middle_split(LLNode *head)
 {
@@ -659,13 +605,13 @@ static LLNode *llist_middle_split(LLNode *head)
     return newlist;
 }
 
-static LLNode *llist_merge_recursive(LLNode *node, int (*compare)(const void*, const void*))
+static LLNode *llist_merge_recursive(LLNode *head, int (*compare)(const void*, const void*))
 {
-    if(node == NULL) return NULL;
-    if(node->next == NULL) return node;
+    if(head == NULL) return NULL;
+    if(head->next == NULL) return head;
 
-    LLNode *list1 = node;
-    LLNode *list2 = llist_middle_split(node);
+    LLNode *list1 = head;
+    LLNode *list2 = llist_middle_split(head);
     LLNode *left = llist_merge_recursive(list1, compare);
     LLNode *right = llist_merge_recursive(list2, compare);
     LLNode mergeHead, *mergeTail = &mergeHead;

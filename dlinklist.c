@@ -7,7 +7,7 @@
 *  @FileName       : dlinklist.c
 *  @Author         : scm 351721714@qq.com
 *  @Create         : 2017/06/18 01:35:31
-*  @Last Modified  : 2017/09/05 18:22:14
+*  @Last Modified  : 2017/09/05 20:26:32
 ********************************************************************************
 */
 
@@ -414,12 +414,14 @@ static DLLNode *dllist_middle(DLLNode *low, DLLNode *high)
 {
     DLLNode *slow = low, *fast = low;
 
+    //如果有两个节点则返回第一个节点
     /*
-     * //如果有两个节点则返回第一个节点
-     * while(fast != high)
-     *     if((fast = fast->next) != high)
-     *         if((fast = fast->next) != high)
-     *             slow = slow->next;
+     * while(fast != high && fast->next != high)
+     * {
+     *     fast = fast->next->next;
+     *     if(fast != NULL)
+     *         slow = slow->next;
+     * }
      * return slow;
      */
 
@@ -488,53 +490,6 @@ static inline void dllist_append_node(DLLNode **curr, DLLNode **next)
     *next = (*next)->next;
 }
 
-/*
- * static inline DLLNode *dllist_forward(DLLNode *node, int steps)
- * {
- *     while(node != NULL && steps--)
- *         node = node->next;
- *     return node;
- * }
- * 
- * DLLNode *dllist_merge(DLinkList *dllist, int k, int (*compare)(const void*, const void*))
- * {
- *     DLLNode mergeHead;
- *     DLLNode *mergeTail = &mergeHead;
- *     DLLNode *i = dllist->head;
- *     while(i != NULL)
- *     {
- *         DLLNode *i_end = dllist_forward(i, k);
- *         DLLNode *j = i_end;
- *         DLLNode *j_end = dllist_forward(j, k);
- *         while(i != i_end && j != j_end)
- *         {
- *             if(compare(i->data, j->data))
- *                 dllist_append_node(&mergeTail, &i);
- *             else 
- *                 dllist_append_node(&mergeTail, &j);
- *         }
- *         while(i != i_end)
- *             dllist_append_node(&mergeTail, &i);
- *         while(j != j_end)
- *             dllist_append_node(&mergeTail, &j);
- *         i = j_end;
- *     }    
- *     mergeTail->next = NULL;
- *     mergeHead.next->prev = NULL;
- *     return mergeHead.next;
- * }
- * 
- * void dllist_merge_sort(DLinkList *dllist, int (*compare)(const void*, const void*))
- * {
- *     assert(dllist != NULL || compare != NULL);
- *     if(dllist != NULL || compare != NULL)
- *     {
- *         for(int k = 1; k < dllist_length(dllist); k *= 2)
- *             dllist->head = dllist_merge(dllist, k, compare);
- *     }
- * }
- */
-
 //中间分割链表，并返回分割出的新链表
 static DLLNode *dllist_middle_split(DLLNode *head)
 {
@@ -554,13 +509,13 @@ static DLLNode *dllist_middle_split(DLLNode *head)
     return newlist;
 }
 
-static DLLNode *dllist_merge_recursive(DLLNode *node, int (*compare)(const void*, const void*))
+static DLLNode *dllist_merge_recursive(DLLNode *head, int (*compare)(const void*, const void*))
 {
-    if(node == NULL) return NULL;
-    if(node->next == NULL) return node;
+    if(head == NULL) return NULL;
+    if(head->next == NULL) return head;
 
-    DLLNode *list1 = node;
-    DLLNode *list2 = dllist_middle_split(node);
+    DLLNode *list1 = head;
+    DLLNode *list2 = dllist_middle_split(head);
     DLLNode *left = dllist_merge_recursive(list1, compare);
     DLLNode *right = dllist_merge_recursive(list2, compare);
 

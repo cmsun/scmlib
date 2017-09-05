@@ -7,7 +7,7 @@
 *  @FileName       : sorttest.cpp
 *  @Author         : scm 351721714@qq.com
 *  @Create         : 2017/06/19 23:00:26
-*  @Last Modified  : 2017/09/05 18:21:44
+*  @Last Modified  : 2017/09/05 20:32:04
 ********************************************************************************
 */
 
@@ -84,8 +84,8 @@ int main(int argc, const char *argv[])
     // printf("dllist_quick_sort time: %d\n", clock() - t);
 
     t = clock();
-    dllist_merge_sort(&dllist, [](const void *data1, const void *data2)->int{return *(int *)data1 < *(int *)data2;});
-    // llist_merge_sort(&llist, [](const void *data1, const void *data2)->int{return *(int *)data1 < *(int *)data2;});
+    // dllist_merge_sort(&dllist, [](const void *data1, const void *data2)->int{return *(int *)data1 < *(int *)data2;});
+    llist_merge_sort(&llist, [](const void *data1, const void *data2)->int{return *(int *)data1 < *(int *)data2;});
     printf("dllist_merge_sort time: %d\n", clock() - t);
 
     int i = 100;
@@ -97,23 +97,23 @@ int main(int argc, const char *argv[])
 
     printf("\n------------------------------------------------------------\n");
 
-    i = 100;
-    for(DllIter iter = dllist_begin(&dllist); iter != dllist_end(); iter = dllist_next(iter))
-    {
-        if(i-- == 0) break;
-        printf("%d ", *(int *)dllist_data(iter));
-    }
+    /*
+     * i = 100;
+     * for(DllIter iter = dllist_begin(&dllist); iter != dllist_end(); iter = dllist_next(iter))
+     * {
+     *     if(i-- == 0) break;
+     *     printf("%d ", *(int *)dllist_data(iter));
+     * }
+     */
 
     printf("\n------------------------------------------------------------\n");
 
-    /*
-     * i = 100;
-     * for(LLIter iter = llist_begin(&llist); iter != llist_end(); iter = llist_next(iter))
-     * {
-     *     if(i-- == 0) break;
-     *     printf("%d ", *(int *)llist_data(iter));
-     * }
-     */
+    i = 100;
+    for(LLIter iter = llist_begin(&llist); iter != llist_end(); iter = llist_next(iter))
+    {
+        if(i-- == 0) break;
+        printf("%d ", *(int *)llist_data(iter));
+    }
 
     return 0;
 }
