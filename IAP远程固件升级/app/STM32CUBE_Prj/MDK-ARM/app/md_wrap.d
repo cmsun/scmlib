@@ -1,0 +1,16 @@
+app\md_wrap.o: ../Middlewares/Third_Party/mbedTLS/library/md_wrap.c
+app\md_wrap.o: ../Inc/mbedtls_config.h
+app\md_wrap.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/check_config.h
+app\md_wrap.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+app\md_wrap.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/md_internal.h
+app\md_wrap.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/md.h
+app\md_wrap.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+app\md_wrap.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/md5.h
+app\md_wrap.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+app\md_wrap.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/sha256.h
+app\md_wrap.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/sha512.h
+app\md_wrap.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/platform.h
+app\md_wrap.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/platform_time.h
+app\md_wrap.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h
+app\md_wrap.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+app\md_wrap.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

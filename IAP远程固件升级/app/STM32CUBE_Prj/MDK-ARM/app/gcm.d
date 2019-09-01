@@ -1,0 +1,9 @@
+app\gcm.o: ../Middlewares/Third_Party/mbedTLS/library/gcm.c
+app\gcm.o: ../Inc/mbedtls_config.h
+app\gcm.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/check_config.h
+app\gcm.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+app\gcm.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/gcm.h
+app\gcm.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/cipher.h
+app\gcm.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+app\gcm.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+app\gcm.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

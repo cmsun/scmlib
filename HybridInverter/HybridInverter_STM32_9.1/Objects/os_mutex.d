@@ -1,0 +1,11 @@
+.\objects\os_mutex.o: UCOSII\CORE\os_mutex.c
+.\objects\os_mutex.o: UCOSII\CORE\ucos_ii.h
+.\objects\os_mutex.o: .\UCOSII\CONFIG\includes.h
+.\objects\os_mutex.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\os_mutex.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\os_mutex.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
+.\objects\os_mutex.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\os_mutex.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\os_mutex.o: .\UCOSII\CORE\ucos_ii.h
+.\objects\os_mutex.o: .\UCOSII\PORT\os_cpu.h
+.\objects\os_mutex.o: .\UCOSII\CONFIG\os_cfg.h

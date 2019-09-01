@@ -1,0 +1,18 @@
+-DDebug
+-DUSE_STDPERIPH_DRIVER
+-D__UVISION_VERSION="514"
+-D_RTE_
+-DSTM32F407xx
+-D__CC_ARM
+
+-std=c99
+
+-isystem C:\\Keil_v5\\ARMCC\\include
+-isystem C:\\Keil_v5\\ARMCC\\include\\rw
+-isystem C:\\Keil_v5\\ARM\\Pack\\ARM\\CMSIS\\5.0.0-Beta4\\CMSIS\\Include
+
+-I BSP
+-I CMSIS
+-I FWLIB/inc
+-I SYSTEM
+-I USER

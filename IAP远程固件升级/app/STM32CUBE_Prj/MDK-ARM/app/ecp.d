@@ -1,0 +1,16 @@
+app\ecp.o: ../Middlewares/Third_Party/mbedTLS/library/ecp.c
+app\ecp.o: ../Inc/mbedtls_config.h
+app\ecp.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/check_config.h
+app\ecp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+app\ecp.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/ecp.h
+app\ecp.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/bignum.h
+app\ecp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+app\ecp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+app\ecp.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/threading.h
+app\ecp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+app\ecp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+app\ecp.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/platform.h
+app\ecp.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/platform_time.h
+app\ecp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h
+app\ecp.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+app\ecp.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/ecp_internal.h

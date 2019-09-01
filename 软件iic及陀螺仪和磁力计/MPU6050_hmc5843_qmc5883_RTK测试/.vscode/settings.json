@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "i2c.h": "c",
+        "mpu9250.h": "c",
+        "mpu9250.h\u00009250.h": "c",
+        "hmc5843.h": "c"
+    }
+}

@@ -1,0 +1,13 @@
+.\objects\parse.o: ..\..\APP\NMEALIB\src\parse.c
+.\objects\parse.o: ..\..\APP\NMEALIB\include\nmea/tok.h
+.\objects\parse.o: ..\..\APP\NMEALIB\include\nmea/config.h
+.\objects\parse.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\assert.h
+.\objects\parse.o: ..\..\APP\NMEALIB\include\nmea/parse.h
+.\objects\parse.o: ..\..\APP\NMEALIB\include\nmea/sentence.h
+.\objects\parse.o: ..\..\APP\NMEALIB\include\nmea/info.h
+.\objects\parse.o: ..\..\APP\NMEALIB\include\nmea/time.h
+.\objects\parse.o: ..\..\APP\NMEALIB\include\nmea/context.h
+.\objects\parse.o: ..\..\APP\NMEALIB\include\nmea/gmath.h
+.\objects\parse.o: ..\..\APP\NMEALIB\include\nmea/units.h
+.\objects\parse.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\parse.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h

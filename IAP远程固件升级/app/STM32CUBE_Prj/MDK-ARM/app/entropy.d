@@ -1,0 +1,10 @@
+app\entropy.o: ../Middlewares/Third_Party/mbedTLS/library/entropy.c
+app\entropy.o: ../Inc/mbedtls_config.h
+app\entropy.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/check_config.h
+app\entropy.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+app\entropy.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/entropy.h
+app\entropy.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+app\entropy.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/sha512.h
+app\entropy.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+app\entropy.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/entropy_poll.h
+app\entropy.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

@@ -1,0 +1,10 @@
+.\objects\tok.o: ..\..\APP\NMEALIB\src\tok.c
+.\objects\tok.o: ..\..\APP\NMEALIB\include\nmea/tok.h
+.\objects\tok.o: ..\..\APP\NMEALIB\include\nmea/config.h
+.\objects\tok.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\assert.h
+.\objects\tok.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\tok.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\tok.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\tok.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\ctype.h
+.\objects\tok.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\tok.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h

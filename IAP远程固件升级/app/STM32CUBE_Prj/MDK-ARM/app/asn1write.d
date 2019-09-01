@@ -1,0 +1,15 @@
+app\asn1write.o: ../Middlewares/Third_Party/mbedTLS/library/asn1write.c
+app\asn1write.o: ../Inc/mbedtls_config.h
+app\asn1write.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/check_config.h
+app\asn1write.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+app\asn1write.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/asn1write.h
+app\asn1write.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/asn1.h
+app\asn1write.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
+app\asn1write.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/bignum.h
+app\asn1write.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+app\asn1write.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+app\asn1write.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/platform.h
+app\asn1write.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/platform_time.h
+app\asn1write.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h
+app\asn1write.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+app\asn1write.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

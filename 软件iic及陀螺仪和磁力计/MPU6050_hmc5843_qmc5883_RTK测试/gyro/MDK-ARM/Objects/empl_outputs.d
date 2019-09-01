@@ -1,0 +1,14 @@
+.\objects\empl_outputs.o: ..\..\APP\MPU\eMPL-hal\eMPL_outputs.c
+.\objects\empl_outputs.o: ..\..\APP\MPU\eMPL-hal\eMPL_outputs.h
+.\objects\empl_outputs.o: ..\..\APP\MPU\driver\include\mltypes.h
+.\objects\empl_outputs.o: ..\..\APP\MPU\driver\include\stdint_invensense.h
+.\objects\empl_outputs.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\empl_outputs.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\empl_outputs.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\errno.h
+.\objects\empl_outputs.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+.\objects\empl_outputs.o: ..\..\APP\MPU\mllite\ml_math_func.h
+.\objects\empl_outputs.o: ..\..\APP\MPU\driver\include\mlmath.h
+.\objects\empl_outputs.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\math.h
+.\objects\empl_outputs.o: ..\..\APP\MPU\mllite\start_manager.h
+.\objects\empl_outputs.o: ..\..\APP\MPU\mllite\data_builder.h
+.\objects\empl_outputs.o: ..\..\APP\MPU\mllite\results_holder.h

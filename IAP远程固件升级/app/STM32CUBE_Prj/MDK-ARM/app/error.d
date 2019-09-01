@@ -1,0 +1,9 @@
+app\error.o: ../Middlewares/Third_Party/mbedTLS/library/error.c
+app\error.o: ../Inc/mbedtls_config.h
+app\error.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/check_config.h
+app\error.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+app\error.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/platform.h
+app\error.o: ../Middlewares/Third_Party/mbedTLS/include/mbedtls/platform_time.h
+app\error.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\time.h
+app\error.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+app\error.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h

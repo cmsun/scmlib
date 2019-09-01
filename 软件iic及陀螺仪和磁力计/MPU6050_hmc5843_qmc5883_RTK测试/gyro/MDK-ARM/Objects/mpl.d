@@ -1,0 +1,16 @@
+.\objects\mpl.o: ..\..\APP\MPU\mllite\mpl.c
+.\objects\mpl.o: ..\..\APP\MPU\mllite\storage_manager.h
+.\objects\mpl.o: ..\..\APP\MPU\driver\include\mltypes.h
+.\objects\mpl.o: ..\..\APP\MPU\driver\include\stdint_invensense.h
+.\objects\mpl.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\mpl.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\mpl.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\errno.h
+.\objects\mpl.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\limits.h
+.\objects\mpl.o: ..\..\APP\MPU\driver\include\log.h
+.\objects\mpl.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\mpl.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdarg.h
+.\objects\mpl.o: ..\..\APP\MPU\mllite\mpl.h
+.\objects\mpl.o: ..\..\APP\MPU\mllite\start_manager.h
+.\objects\mpl.o: ..\..\APP\MPU\mllite\data_builder.h
+.\objects\mpl.o: ..\..\APP\MPU\mllite\results_holder.h
+.\objects\mpl.o: ..\..\APP\MPU\driver\include\mlinclude.h
