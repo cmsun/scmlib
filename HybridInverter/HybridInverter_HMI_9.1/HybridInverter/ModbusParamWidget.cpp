@@ -1,5 +1,5 @@
-#include "widget.h"
-#include "ui_widget.h"
+#include "ModbusParamWidget.h"
+#include "ui_ModbusParamWidget.h"
 #include "QDebug"
 #include "QSerialPortInfo"
 #include "QSettings"
@@ -9,9 +9,9 @@
 #define PARAM_REG_CNT       35
 #define DEFAULT_PARAM       "./HybridInverter.ini"
 
-Widget::Widget(QWidget *parent) :
+ModbusParamWidget::ModbusParamWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::Widget),
+    ui(new Ui::ModbusParamWidget),
     timer(new QTimer(this)),
     paramName(DEFAULT_PARAM),
     modbus(new QModbusRtuSerialMaster(this))
@@ -76,13 +76,13 @@ Widget::Widget(QWidget *parent) :
     connect(timer, SIGNAL(timeout()), this, SLOT(on_modbus_read_param()));
 }
 
-Widget::~Widget()
+ModbusParamWidget::~ModbusParamWidget()
 {
     delete ui;
 }
 
 //设置单个参数
-void Widget::on_modify_single_param()
+void ModbusParamWidget::on_modify_single_param()
 {
     auto type = QModbusDataUnit::RegisterType::HoldingRegisters;
     QPushButton *sender = qobject_cast<QPushButton *>(QObject::sender());
@@ -110,7 +110,7 @@ void Widget::on_modify_single_param()
         }
         else
         {
-            qDebug("Find widgets error: %s %d", __FILE__, __LINE__);
+            qDebug("Find ModbusParamWidgets error: %s %d", __FILE__, __LINE__);
             return;
         }
     }
@@ -120,7 +120,7 @@ void Widget::on_modify_single_param()
 }
 
 //设置所有参数
-void Widget::on_modify_all_param()
+void ModbusParamWidget::on_modify_all_param()
 {
     auto type = QModbusDataUnit::RegisterType::HoldingRegisters;
     uint16_t addr = 0, count = PARAM_REG_CNT, value;
@@ -144,7 +144,7 @@ void Widget::on_modify_all_param()
         }
         else
         {
-            qDebug("Find widgets error: %s %d", __FILE__, __LINE__);
+            qDebug("Find ModbusParamWidgets error: %s %d", __FILE__, __LINE__);
             return;
         }
     }
@@ -153,7 +153,7 @@ void Widget::on_modify_all_param()
 }
 
 //定时读取设备参数
-void Widget::on_modbus_read_param()
+void ModbusParamWidget::on_modbus_read_param()
 {
     auto type = QModbusDataUnit::RegisterType::HoldingRegisters;
     uint16_t addr = 0;
@@ -170,7 +170,7 @@ void Widget::on_modbus_read_param()
 }
 
 //显示参数
-void Widget::on_display_param()
+void ModbusParamWidget::on_display_param()
 {
     QModbusReply *reply = qobject_cast<QModbusReply *>(QObject::sender());
     QModbusDataUnit unit;
@@ -208,7 +208,7 @@ void Widget::on_display_param()
 }
 
 //打开串口
-void Widget::on_serial_port_open()
+void ModbusParamWidget::on_serial_port_open()
 {
     if(modbus->state() == QModbusDevice::ConnectedState)
     {
@@ -234,13 +234,13 @@ void Widget::on_serial_port_open()
 }
 
 //保存参数到默认配置文件里
-void Widget::on_save_default_settings()
+void ModbusParamWidget::on_save_default_settings()
 {
     save_settings(paramName);
 }
 
 //读取其它参数文件
-void Widget::on_load_settings_from()
+void ModbusParamWidget::on_load_settings_from()
 {
     QString filter = tr("配置文件(*.ini)");
     QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "./", filter, 0);
@@ -251,7 +251,7 @@ void Widget::on_load_settings_from()
 }
 
 //参数另存为其它文件
-void Widget::on_save_settings_as()
+void ModbusParamWidget::on_save_settings_as()
 {
     QString filter = tr("配置文件(*.ini)");
     QString fileName = QFileDialog::getSaveFileName(this, tr("Save As"), "./", filter, 0);
@@ -261,7 +261,7 @@ void Widget::on_save_settings_as()
     }
 }
 
-void Widget::read_settings(QString name)
+void ModbusParamWidget::read_settings(QString name)
 {
     QSettings *settings = new QSettings(name, QSettings::IniFormat);
     for(int i = 0; i < PARAM_REG_CNT; ++i)
@@ -283,13 +283,13 @@ void Widget::read_settings(QString name)
         }
         else
         {
-            qDebug("Find widgets error: %s %d", __FILE__, __LINE__);
+            qDebug("Find ModbusParamWidgets error: %s %d", __FILE__, __LINE__);
         }
     }
     delete settings;
 }
 
-void Widget::save_settings(QString name)
+void ModbusParamWidget::save_settings(QString name)
 {
     QSettings *settings = new QSettings(name, QSettings::IniFormat);
     for(int i = 0; i < PARAM_REG_CNT; ++i)
@@ -308,7 +308,7 @@ void Widget::save_settings(QString name)
         }
         else
         {
-            qDebug("Find widgets error: %s %d", __FILE__, __LINE__);
+            qDebug("Find ModbusParamWidgets error: %s %d", __FILE__, __LINE__);
         }
     }
     delete settings;

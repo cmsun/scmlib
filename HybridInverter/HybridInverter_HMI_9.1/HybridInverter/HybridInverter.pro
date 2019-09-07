@@ -12,8 +12,10 @@ TARGET = HybridInverter
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
-        widget.cpp
-HEADERS  += widget.h
+SOURCES += main.cpp \
+    ModbusParamWidget.cpp
+HEADERS  += \
+    ModbusParamWidget.h
 
-FORMS    += widget.ui
+FORMS    += \
+    ModbusParamWidget.ui

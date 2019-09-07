@@ -1,9 +1,0 @@
-.\objects\mbformat.o: modbus\src\mbformat.c
-.\objects\mbformat.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stddef.h
-.\objects\mbformat.o: .\modbus\inc\mbconfig.h
-.\objects\mbformat.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\mbformat.o: .\modbus\inc\mbchecksum.h
-.\objects\mbformat.o: .\modbus\inc\mberror.h
-.\objects\mbformat.o: .\modbus\inc\modbus.h
-.\objects\mbformat.o: .\modbus\inc\mbprocess.h
-.\objects\mbformat.o: .\modbus\inc\mbformat.h

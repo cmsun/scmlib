@@ -1,21 +1,21 @@
-#ifndef WIDGET_H
-#define WIDGET_H
+#ifndef ModbusParamWidget_H
+#define ModbusParamWidget_H
 
 #include <QWidget>
 #include <QTimer>
 #include <QtSerialBus/QModbusRtuSerialMaster>
 
 namespace Ui {
-class Widget;
+class ModbusParamWidget;
 }
 
-class Widget : public QWidget
+class ModbusParamWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit Widget(QWidget *parent = 0);
-    ~Widget();
+    explicit ModbusParamWidget(QWidget *parent = 0);
+    ~ModbusParamWidget();
 
 private slots:
     void on_modify_single_param();
@@ -28,7 +28,7 @@ private slots:
     void on_display_param();
 
 private:
-    Ui::Widget *ui;
+    Ui::ModbusParamWidget *ui;
     QTimer *timer;
     QString paramName;
     QModbusRtuSerialMaster *modbus;
@@ -36,4 +36,4 @@ private:
     void save_settings(QString name);
 };
 
-#endif // WIDGET_H
+#endif // ModbusParamWidget_H

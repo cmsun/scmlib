@@ -1,9 +1,0 @@
-.\objects\mbascii.o: modbus\src\mbascii.c
-.\objects\mbascii.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
-.\objects\mbascii.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdbool.h
-.\objects\mbascii.o: .\modbus\inc\mbconfig.h
-.\objects\mbascii.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h
-.\objects\mbascii.o: .\modbus\inc\modbus.h
-.\objects\mbascii.o: .\modbus\inc\mbchecksum.h
-.\objects\mbascii.o: .\modbus\inc\mberror.h
-.\objects\mbascii.o: .\modbus\inc\mbformat.h
