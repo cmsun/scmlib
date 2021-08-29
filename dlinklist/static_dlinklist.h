@@ -24,7 +24,7 @@ typedef struct double_link_list_node_base
     bool in_use;
     struct double_link_list_node_base *prev;
     struct double_link_list_node_base *next;
-    int size;
+    int data_size;
     unsigned char data[1];
 } DLLNodeBase;
 #pragma pack()
@@ -32,14 +32,12 @@ typedef struct double_link_list_node_base
 typedef DLLNodeBase *DLLIter;
 typedef DLLNodeBase *RDLLIter;
 
-typedef DLLNodeBase *(*NodeMalloc) (void);
-typedef void (*NodeFree) (DLLNodeBase *);
-
 typedef struct double_link_list
 {
-    int DataMaxSize;
-    NodeMalloc malloc;
-    NodeFree free;
+    void *node_array;
+    int node_size;
+    int node_cnt;
+    int node_data_capacity;
     DLLNodeBase *head;
     DLLNodeBase *tail;
     int length;
@@ -47,7 +45,7 @@ typedef struct double_link_list
 
 typedef bool (*Equal)(const void*, const void*);
 
-void dllist_init(DLinkList *dllist, int datamax, NodeMalloc _malloc, NodeFree _free);
+void dllist_init(DLinkList *dllist, void *node_array, int array_size, int node_cnt);
 void dllist_clear(DLinkList *dllist);
 bool dllist_assign(DLinkList *dllist, const void *data, int len, int count);
 bool dllist_push_front(DLinkList *dllist, const void *data, int len);
@@ -94,7 +92,7 @@ static inline DLLIter dllist_end(void)
 
 static inline void *dllist_data(DLLIter iter, int *len)
 {
-    if(len) *len = iter->size;
+    if(len) *len = iter->data_size;
     return iter->data;
 }
 
@@ -115,7 +113,7 @@ static inline RDLLIter dllist_rend(void)
 
 static inline void *dllist_rdata(RDLLIter riter, int *len)
 {
-    if(len) *len = riter->size;
+    if(len) *len = riter->data_size;
     return riter->data;
 }
 
@@ -126,19 +124,19 @@ static inline RDLLIter dllist_rnext(RDLLIter riter)
 
 static inline void *dllist_front(DLinkList *dllist, int *len)
 {
-    if(len) *len = dllist->head->size;
+    if(len) *len = dllist->head->data_size;
     return dllist->head->data;
 }
 
 static inline void *dllist_back(DLinkList *dllist, int *len)
 {
-    if(len) *len = dllist->tail->size;
+    if(len) *len = dllist->tail->data_size;
     return dllist->tail->data;
 }
 
-static inline int dllist_data_max_size(DLinkList *dllist)
+static inline int dllist_data_capacity(DLinkList *dllist)
 {
-    return dllist->DataMaxSize;
+    return dllist->node_data_capacity;
 }
 
 static inline int dllist_length(DLinkList *dllist)

@@ -15,13 +15,35 @@
 #include "utility.h"
 #include "static_dlinklist.h"
 
-void dllist_init(DLinkList *dllist, int datamax, NodeMalloc _malloc, NodeFree _free)
+static DLLNodeBase *dllist_node_malloc(DLinkList *dllist)
+{
+    DLLNodeBase *temp, *node = NULL;
+    for(int i = 0; i < dllist->node_cnt; ++i)
+    {
+        temp = (DLLNodeBase *)((unsigned char *)dllist->node_array + (dllist->node_size * i));
+        if(!temp->in_use)
+        {
+            temp->in_use = true;
+            node = temp;
+            break;
+        }
+    }
+    return (DLLNodeBase *)node;
+}
+
+static inline void dllist_node_free(DLLNodeBase *node)
+{
+    node->in_use = false;
+}
+
+void dllist_init(DLinkList *dllist, void *node_array, int array_size, int node_cnt)
 {
     if(dllist != NULL)
     {
-        dllist->DataMaxSize = datamax;
-        dllist->malloc = _malloc;
-        dllist->free = _free;
+        dllist->node_array = node_array;
+        dllist->node_size = array_size/node_cnt;
+        dllist->node_cnt = node_cnt;
+        dllist->node_data_capacity = dllist->node_size - sizeof(DLLNodeBase) + 1;
         dllist->head = NULL;
         dllist->tail = NULL;
         dllist->length = 0;
@@ -36,7 +58,7 @@ void dllist_clear(DLinkList *dllist)
         {
             DLLNodeBase *temp = dllist->head;
             dllist->head = temp->next;
-            dllist->free(temp);
+            dllist_node_free(temp);
         }
         dllist->length = 0;
         dllist->tail = NULL;
@@ -51,11 +73,11 @@ bool dllist_assign(DLinkList *dllist, const void *data, int len, int count)
         dllist_clear(dllist);
     for(int i = 0; i < count; ++i)
     {
-        DLLNodeBase *node = dllist->malloc();
+        DLLNodeBase *node = dllist_node_malloc(dllist);
         if(node == NULL)
             goto ERROR;
-        node->size = min(len, dllist->DataMaxSize);
-        memcpy(node->data, (char *)data + i*node->size, node->size);
+        node->data_size = min(len, dllist->node_data_capacity);
+        memcpy(node->data, (unsigned char *)data + i*node->data_size, node->data_size);
         node->prev = dllist->tail;
         node->next = NULL;
         if(dllist->tail == NULL)
@@ -76,11 +98,11 @@ bool dllist_push_front(DLinkList *dllist, const void *data, int len)
 {
     if(dllist != NULL && data != NULL)
     {
-        DLLNodeBase *node = dllist->malloc();
+        DLLNodeBase *node = dllist_node_malloc(dllist);
         if(node == NULL)
             return false;
-        node->size = min(len, dllist->DataMaxSize);
-        memcpy(node->data, data, node->size);
+        node->data_size = min(len, dllist->node_data_capacity);
+        memcpy(node->data, data, node->data_size);
         node->prev = NULL;
         node->next = dllist->head;
         if(dllist->head != NULL)
@@ -98,11 +120,11 @@ bool dllist_push_back(DLinkList *dllist, const void *data, int len)
 {
     if(dllist != NULL && data != NULL)
     {
-        DLLNodeBase *node = dllist->malloc();
+        DLLNodeBase *node = dllist_node_malloc(dllist);
         if(node == NULL)
             return false;
-        node->size = min(len, dllist->DataMaxSize);
-        memcpy(node->data, data, node->size);
+        node->data_size = min(len, dllist->node_data_capacity);
+        memcpy(node->data, data, node->data_size);
         node->prev = dllist->tail;
         node->next = NULL;
         if(dllist->tail != NULL)
@@ -127,7 +149,7 @@ bool dllist_pop_front(DLinkList *dllist)
             next->prev = NULL;
         else
             dllist->tail = NULL;
-        dllist->free(head);
+        dllist_node_free(head);
         dllist->length--;
         return true;
     }
@@ -145,7 +167,7 @@ bool dllist_pop_back(DLinkList *dllist)
             dllist->tail->next = NULL;
         else
             dllist->head = NULL;
-        dllist->free(tail);
+        dllist_node_free(tail);
         dllist->length--;
         return true;
     }
@@ -163,11 +185,11 @@ bool dllist_index_insert(DLinkList *dllist, int index, const void *data, int len
         return dllist_push_back(dllist, data, len);
     else
     {
-        DLLNodeBase *node = dllist->malloc();
+        DLLNodeBase *node = dllist_node_malloc(dllist);
         if(node == NULL)
             return false;
-        node->size = min(len, dllist->DataMaxSize);
-        memcpy(node->data, data, node->size);
+        node->data_size = min(len, dllist->node_data_capacity);
+        memcpy(node->data, data, node->data_size);
         DLLNodeBase *prevNode = dllist->head;
         //新结点插入在prevNode的后面
         while(--index)
@@ -196,7 +218,7 @@ bool dllist_index_delete(DLinkList *dllist, int index)
                 delNode = delNode->next;
             delNode->prev->next = delNode->next;
             delNode->next->prev = delNode->prev;
-            dllist->free(delNode);
+            dllist_node_free(delNode);
             dllist->length--;
             return true;
         }
@@ -251,11 +273,11 @@ bool dllist_iter_insert(DLinkList *dllist, DLLIter iter, const void *data, int l
             return dllist_push_back(dllist, data, len);
         else
         {
-            DLLNodeBase *node = dllist->malloc();
+            DLLNodeBase *node = dllist_node_malloc(dllist);
             if(node == NULL)
                 return false;
-            node->size = min(len, dllist->DataMaxSize);
-            memcpy(node->data, data, node->size);
+            node->data_size = min(len, dllist->node_data_capacity);
+            memcpy(node->data, data, node->data_size);
             node->prev = iter->prev;
             node->next = iter;
             iter->prev->next = node;
@@ -300,7 +322,7 @@ bool dllist_iter_delete(DLinkList *dllist, DLLIter *iter)
             DLLNodeBase *nextNode = (*iter)->next;
             preNode->next = nextNode;
             nextNode->prev = preNode;
-            dllist->free(currNode);
+            dllist_node_free(currNode);
             *iter = nextNode;
             dllist->length--;
             return true;
@@ -400,14 +422,14 @@ static DLLNodeBase *dllist_partition(DLinkList *dllist, DLLNodeBase *low, DLLNod
     //void *pivot = low->data; //不能总是选第一个结点作为基准点。
     DLLNodeBase *middleNode = dllist_middle(low, high);
     void *pivot = &(middleNode->data);
-    memcpy(middleNode->data, low->data, dllist->DataMaxSize);
+    memcpy(middleNode->data, low->data, dllist->node_data_capacity);
     while(low != high)
     {
         while(low != high && compare(&(high->data), pivot) >= 0)
             high = high->prev;
         if(low != high)
         {
-            memcpy(low->data, high->data, dllist->DataMaxSize);
+            memcpy(low->data, high->data, dllist->node_data_capacity);
             low = low->next;
         }
 
@@ -415,11 +437,11 @@ static DLLNodeBase *dllist_partition(DLinkList *dllist, DLLNodeBase *low, DLLNod
             low = low->next;
         if(low != high)
         {
-            memcpy(high->data, low->data, dllist->DataMaxSize);
+            memcpy(high->data, low->data, dllist->node_data_capacity);
             high = high->prev;
         }
     }
-    memcpy(low->data, pivot, dllist->DataMaxSize);
+    memcpy(low->data, pivot, dllist->node_data_capacity);
     return low;
 }
 

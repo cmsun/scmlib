@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "static_dlinklist.h"
+#include "utility.h"
 
 #define DataMaxSize sizeof(int)
 struct
@@ -23,26 +24,6 @@ struct
     DLLNodeBase base;
     uint8_t data[DataMaxSize-1];
 } Nodes[10000];
-
-DLLNodeBase *test_node_malloc(void)
-{
-    DLLNodeBase *node = NULL;
-    for(int i = 0; i < sizeof(Nodes)/sizeof(Nodes[0]); ++i)
-    {
-        if(!Nodes[i].base.in_use)
-        {
-            node = &Nodes[i];
-            Nodes[i].base.in_use = true;
-            break;
-        }
-    }
-    return node;
-}
-
-void test_node_free(DLLNodeBase *node)
-{
-    node->in_use = false;
-}
 
 int equal(const void *data1, const void *data2)
 {
@@ -72,7 +53,7 @@ int main(int argc, char *argv[])
 
     int array[20];
     DLinkList dllist;
-    dllist_init(&dllist, DataMaxSize, test_node_malloc, test_node_free);
+    dllist_init(&dllist, &Nodes, sizeof(Nodes), members(Nodes));
 
     printf("------------Test:dllist_push_front dllist_push_back-----------------\n");
     for(int i = 0; i < sizeof(array)/sizeof(array[0]); ++i)
