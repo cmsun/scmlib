@@ -13,14 +13,13 @@ typedef struct
 } RingQueue_TypeDef;
 
 void rq_init(RingQueue_TypeDef *rq, uint8_t *buff, uint32_t size);
-static inline uint32_t rq_count(RingQueue_TypeDef *rq) { return rq->count; }
-static inline uint32_t rq_remain(RingQueue_TypeDef *rq) { return rq->capacity - rq->count; }
 uint32_t rq_push(RingQueue_TypeDef *rq, uint8_t byte);
 uint32_t rq_push_bytes(RingQueue_TypeDef *rq, const uint8_t *bytes, uint32_t n);
 uint32_t rq_pop_bytes(RingQueue_TypeDef *rq, uint32_t n);
 uint32_t rq_read_only(RingQueue_TypeDef *rq, uint8_t *buff, uint32_t n);
 uint32_t rq_read_bytes(RingQueue_TypeDef *rq, uint8_t *buff, uint32_t n);
 char *rq_read_string(RingQueue_TypeDef *rq, uint8_t *buff, uint32_t size);
-
+static inline uint32_t rq_data_size(RingQueue_TypeDef *rq) { return rq->count; }
+static inline uint32_t rq_remain_space(RingQueue_TypeDef *rq) { return rq->capacity - rq->count; }
 
 #endif

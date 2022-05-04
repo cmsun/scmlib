@@ -13,57 +13,57 @@ void rq_init(RingQueue_TypeDef *rq, uint8_t *buff, uint32_t size)
 
 uint32_t rq_push(RingQueue_TypeDef *rq, uint8_t byte)
 {
-    uint32_t byte2push = 0;
+    uint32_t bytes2push = 0;
     if(rq->count < rq->capacity)
     {
         rq->buff[rq->front++] = byte;
         rq->front %= rq->capacity;
         rq->count++;
-        byte2push = 1;
+        bytes2push = 1;
     }
-    return byte2push;
+    return bytes2push;
 }
 
 uint32_t rq_push_bytes(RingQueue_TypeDef *rq, const uint8_t *bytes, uint32_t n)
 {
-    uint32_t byte2push = 0;
+    uint32_t bytes2push = 0;
     uint32_t copy1st, copy2nd;
     
     if(rq->count < rq->capacity)
     {        
-        byte2push = min(rq_remain(rq), n);
+        bytes2push = min(rq_remain_space(rq), n);
         
-        if(rq->front + byte2push <= rq->capacity)
+        if(rq->front + bytes2push <= rq->capacity)
         {
-            memcpy(rq->buff + rq->front, bytes, byte2push);
+            memcpy(rq->buff + rq->front, bytes, bytes2push);
         }
         else
         {
             copy1st = rq->capacity - rq->front;
-            copy2nd = byte2push - copy1st;
+            copy2nd = bytes2push - copy1st;
             memcpy(rq->buff + rq->front, bytes, copy1st);
             memcpy(rq->buff, bytes + copy1st, copy2nd);
         }
         
-        rq->count += byte2push;
-        rq->front += byte2push;
+        rq->count += bytes2push;
+        rq->front += bytes2push;
         rq->front %= rq->capacity;
     }
     
-    return byte2push;
+    return bytes2push;
 }
 
 uint32_t rq_pop_bytes(RingQueue_TypeDef *rq, uint32_t n)
 {
-    uint32_t byte2pop = 0;
+    uint32_t bytes2pop = 0;
     if(rq->count > 0)
     {
-        byte2pop = min(rq->count, n);
-        rq->rear += byte2pop;
+        bytes2pop = min(rq->count, n);
+        rq->rear += bytes2pop;
         rq->rear %= rq->capacity;
-        rq->count -= byte2pop;
+        rq->count -= bytes2pop;
     }
-    return byte2pop;
+    return bytes2pop;
 }
 
 uint32_t rq_read_only(RingQueue_TypeDef *rq, uint8_t *buff, uint32_t n)
@@ -122,7 +122,7 @@ char *rq_read_string(RingQueue_TypeDef *rq, uint8_t *buff, uint32_t size)
                 rq_read_only(rq, buff, min(bytes2read, size));
                 rq_pop_bytes(rq, bytes2read);
                 buff[bytes2read<size ? bytes2read : size-1] = '\0';
-                straddr = buff;
+                straddr = (char *)buff;
                 break;
             }
             index++;

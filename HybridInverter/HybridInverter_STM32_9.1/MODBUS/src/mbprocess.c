@@ -48,8 +48,8 @@ void mb_process01(mbu8 *frame, mbu8 *sendbuff)
         }
         else    //如果当前读取的mbCoil所在的字节等于endAddr所在字节 
         {
-            sendbuff[3+i] = mbCoil[startAddr+i] << remainBit;   //右移，把不读取的位清0
-            sendbuff[3+i] >>= movBit + remainBit;               //左移回去
+            sendbuff[3+i] = mbCoil[startAddr+i] << remainBit;   //左移，把不读取的位清0
+            sendbuff[3+i] >>= movBit + remainBit;               //右移回去
         }
     }
     

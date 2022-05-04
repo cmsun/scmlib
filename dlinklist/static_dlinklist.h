@@ -30,59 +30,67 @@ typedef struct double_link_list_node_base
 #pragma pack()
 
 typedef DLLNodeBase *DLLIter;
-typedef DLLNodeBase *RDLLIter;
 
 typedef struct double_link_list
 {
     void *node_array;
     int node_size;
     int node_cnt;
-    int node_data_capacity;
+    int node_data_max;
     DLLNodeBase *head;
     DLLNodeBase *tail;
     int length;
 } DLinkList;
 
-typedef bool (*Equal)(const void*, const void*);
+typedef bool (*EqualFun)(const void*, const void*);
+typedef int (*CmpFun)(const void*, const void*);
 
 void dllist_init(DLinkList *dllist, void *node_array, int array_size, int node_cnt);
 void dllist_clear(DLinkList *dllist);
-bool dllist_assign(DLinkList *dllist, const void *data, int len, int count);
+int dllist_assign(DLinkList *dllist, const void *array, int array_size, int element_cnt);
 bool dllist_push_front(DLinkList *dllist, const void *data, int len);
 bool dllist_push_back(DLinkList *dllist, const void *data, int len);
 bool dllist_pop_front(DLinkList *dllist);
 bool dllist_pop_back(DLinkList *dllist);
 bool dllist_index_insert(DLinkList *dllist, int index, const void *data, int len);
 bool dllist_index_delete(DLinkList *dllist, int index);
-int dllist_key_index(DLinkList *dllist, Equal equal, const void *key);
-bool dllist_key_delete(DLinkList *dllist, Equal equal, const void *key);
-bool dllist_iter_insert(DLinkList *dllist, DLLIter iter, const void *data, int len);
-bool dllist_iter_delete(DLinkList *dllist, DLLIter *iter);
-DLLIter dllist_find_first(DLinkList *dllist, Equal equal, const void *key);
-DLLIter dllist_find_last(DLinkList *dllist, Equal equal, const void *key);
-int dllist_count(DLinkList *dllist, Equal equal, const void *key);
+int dllist_key_index(DLinkList *dllist, EqualFun equal, const void *key);
+bool dllist_key_delete(DLinkList *dllist, EqualFun equal, const void *key);
+bool dllist_iter_insert_front(DLinkList *dllist, DLLIter iter, const void *data, int len);
+bool dllist_iter_insert_back(DLinkList *dllist, DLLIter iter, const void *data, int len);
+DLLIter dllist_iter_delete(DLinkList *dllist, DLLIter iter);
+DLLIter dllist_iter_erase(DLinkList *dllist, DLLIter iter, int cnt);
+DLLIter dllist_find_first(DLinkList *dllist, EqualFun equal, const void *key);
+DLLIter dllist_find_last(DLinkList *dllist, EqualFun equal, const void *key);
+int dllist_count(DLinkList *dllist, EqualFun equal, const void *key);
 void *dllist_at(DLinkList *dllist, int index, int *len);
+//使用快速排序时内存池中至少要有一个未分配的块。
 //排序函数的用法和标准库的qsort一样，比较函数应该返回1、0、-1三个值。
-void dllist_quick_sort(DLinkList *dllist, int (*compare)(const void*, const void*));
+void dllist_quick_sort(DLinkList *dllist, CmpFun compare);
 //并归排序比较函数应返回0和非0两个比较值。
-void dllist_merge_sort(DLinkList *dllist, int (*compare)(const void*, const void*));
-static DLLIter dllist_begin(DLinkList *dllist);
-static DLLIter dllist_end(void);
-static void *dllist_data(DLLIter iter, int *len);
-static DLLIter dllist_next(DLLIter iter);
-static RDLLIter dllist_rbegin(DLinkList *dllist);
-static RDLLIter dllist_rend(void);
-static void *dllist_rdata(RDLLIter riter, int *len);
-static RDLLIter dllist_rnext(RDLLIter riter);
-static void *dllist_front(DLinkList *dllist, int *len);
-static void *dllist_back(DLinkList *dllist, int *len);
-static int dllist_data_max_size(DLinkList *dllist);
-static int dllist_length(DLinkList *dllist);
-static bool dllist_empty(DLinkList *dllist);
+void dllist_merge_sort(DLinkList *dllist, CmpFun compare);
+
+static inline DLLIter dllist_begin(DLinkList *dllist);
+static inline DLLIter dllist_end(void);
+static inline void *dllist_data(DLLIter iter, int *len);
+static inline DLLIter dllist_next(DLLIter iter);
+static inline DLLIter dllist_prev(DLLIter iter);
+static inline DLLIter dllist_rbegin(DLinkList *dllist);
+static inline void *dllist_front(DLinkList *dllist, int *len);
+static inline void *dllist_back(DLinkList *dllist, int *len);
+static inline int dllist_node_data_max(DLinkList *dllist);
+static inline int dllist_length(DLinkList *dllist);
+static inline bool dllist_empty(DLinkList *dllist);
+static inline bool dllist_full(DLinkList *dllist);
 
 static inline DLLIter dllist_begin(DLinkList *dllist)
 {
     return dllist->head;
+}
+
+static inline DLLIter dllist_rbegin(DLinkList *dllist)
+{
+    return dllist->tail;
 }
 
 static inline DLLIter dllist_end(void)
@@ -93,7 +101,7 @@ static inline DLLIter dllist_end(void)
 static inline void *dllist_data(DLLIter iter, int *len)
 {
     if(len) *len = iter->data_size;
-    return iter->data;
+    return iter->data_size > 0 ? iter->data : NULL;
 }
 
 static inline DLLIter dllist_next(DLLIter iter)
@@ -101,42 +109,26 @@ static inline DLLIter dllist_next(DLLIter iter)
     return iter ? iter->next : NULL;
 }
 
-static inline RDLLIter dllist_rbegin(DLinkList *dllist)
+static inline DLLIter dllist_prev(DLLIter iter)
 {
-    return dllist->tail;
-}
-
-static inline RDLLIter dllist_rend(void)
-{
-    return NULL;
-}
-
-static inline void *dllist_rdata(RDLLIter riter, int *len)
-{
-    if(len) *len = riter->data_size;
-    return riter->data;
-}
-
-static inline RDLLIter dllist_rnext(RDLLIter riter)
-{
-    return riter ? riter->prev : NULL;
+    return iter ? iter->prev : NULL;
 }
 
 static inline void *dllist_front(DLinkList *dllist, int *len)
 {
     if(len) *len = dllist->head->data_size;
-    return dllist->head->data;
+    return dllist->head->data_size > 0 ? dllist->head->data : NULL;
 }
 
 static inline void *dllist_back(DLinkList *dllist, int *len)
 {
     if(len) *len = dllist->tail->data_size;
-    return dllist->tail->data;
+    return dllist->head->data_size > 0 ? dllist->tail->data : NULL;
 }
 
-static inline int dllist_data_capacity(DLinkList *dllist)
+static inline int dllist_node_data_max(DLinkList *dllist)
 {
-    return dllist->node_data_capacity;
+    return dllist->node_data_max;
 }
 
 static inline int dllist_length(DLinkList *dllist)
@@ -147,6 +139,11 @@ static inline int dllist_length(DLinkList *dllist)
 static inline bool dllist_empty(DLinkList *dllist)
 {
     return dllist->length == 0;
+}
+
+static inline bool dllist_full(DLinkList *dllist)
+{
+    return dllist->length == dllist->node_cnt;
 }
 
 #endif /* end of include guard: STATIC_DLINKLIST_H */

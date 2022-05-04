@@ -1,0 +1,572 @@
+###############################################################################
+#
+# IAR ELF Linker V3.11.1.207 for STM8                     28/Nov/2020  17:01:58
+# Copyright 2010-2019 IAR Systems AB.
+#
+#    Output file  =  
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Exe\Project.out
+#    Map file     =  
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\List\Project.map
+#    Command line =  
+#        -f C:\Users\scm\AppData\Local\Temp\EWEAA8.tmp
+#        (C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\blower.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\digitron.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\filter.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\led.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\main.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\pid.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\PWM.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_adc1.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_awu.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_beep.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_clk.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_exti.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_flash.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_gpio.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_i2c.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_it.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_itc.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_iwdg.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_rst.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_spi.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_tim1.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_tim2.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_tim4.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_uart1.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\stm8s_wwdg.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\TempManage.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\TempSwitch.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\thermometer.o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj\tick.o
+#        --redirect _Printf=_PrintfFullNoMb --redirect _Scanf=_ScanfFullNoMb
+#        --no_out_extension -o
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Exe\Project.out
+#        --map
+#        C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\List\Project.map
+#        --config "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.3\stm8\config\lnkstm8.icf" --config_def _CSTACK_SIZE=0x100
+#        --config_def _HEAP_SIZE=0x100 --entry __iar_program_start)
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+__SystemLibrary            = DLib
+__code_model               = small
+__core                     = stm8
+__data_model               = medium
+__dlib_file_descriptor     = 0
+__dlib_full_locale_support = 0
+__rt_version               = 4
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A0":  place at start of [0x000000-0x0000ff] { rw section .vregs };
+"A1":  place at end of [0x000000-0x0017ff] { block CSTACK };
+"P2":  place in [from 0x000000 to 0x0017ff] {
+          block HEAP, rw section .far.bss, rw section .far.data,
+          rw section .far.noinit, rw section .far_func.textrw,
+          rw section .huge.bss, rw section .huge.data, rw section .huge.noinit,
+          rw section .huge_func.textrw, rw section .iar.dynexit,
+          rw section .near.bss, rw section .near.data, rw section .near.noinit,
+          rw section .near_func.textrw };
+"A2":  place at start of [0x008000-0x00ffff] { block INTVEC };
+"P3":  place in [from 0x008000 to 0x00ffff] {
+          ro section .far.data_init, ro section .far_func.textrw_init,
+          ro section .huge.data_init, ro section .huge_func.textrw_init,
+          ro section .iar.init_table, ro section .init_array,
+          ro section .near.data_init, ro section .near.rodata,
+          ro section .near_func.text, ro section .near_func.textrw_init,
+          ro section .tiny.data_init, ro section .tiny.rodata_init };
+do not initialize {
+   rw section .far.noinit, rw section .huge.noinit, rw section .near.noinit,
+   rw section .tiny.noinit, rw section .vregs };
+initialize by copy {
+   rw section .far.bss, rw section .far.data, rw section .far_func.textrw,
+   rw section .huge.bss, rw section .huge.data, rw section .huge_func.textrw,
+   rw section .iar.dynexit, rw section .near.bss, rw section .near.data,
+   rw section .near_func.textrw, rw section .tiny.bss, rw section .tiny.data,
+   ro section .tiny.rodata };
+
+No sections matched the following patterns:
+
+  ro section .far.data_init          in "P3"
+  ro section .far.rodata             in "P4"
+  ro section .far_func.text          in "P4"
+  ro section .far_func.textrw_init   in "P3"
+  ro section .huge.data_init         in "P3"
+  ro section .huge.rodata            in "P5"
+  ro section .huge_func.text         in "P5"
+  ro section .huge_func.textrw_init  in "P3"
+  ro section .iar.init_table         in "P3"
+  ro section .init_array             in "P3"
+  ro section .near.rodata            in "P3"
+  ro section .near_func.textrw_init  in "P3"
+  ro section .tiny.data_init         in "P3"
+  ro section .tiny.rodata_init       in "P3"
+  rw section .eeprom.noinit          in "P6"
+  rw section .far.bss                in "P2"
+  rw section .far.data               in "P2"
+  rw section .far.noinit             in "P2"
+  rw section .far_func.textrw        in "P2"
+  rw section .huge.bss               in "P2"
+  rw section .huge.data              in "P2"
+  rw section .huge.noinit            in "P2"
+  rw section .huge_func.textrw       in "P2"
+  rw section .iar.dynexit            in "P2"
+  rw section .near.noinit            in "P2"
+  rw section .near_func.textrw       in "P2"
+  rw section .tiny.bss               in "P1"
+  rw section .tiny.data              in "P1"
+  rw section .tiny.noinit            in "P1"
+  rw section .tiny.rodata            in "P1"
+
+
+  Section            Kind      Address   Size  Object
+  -------            ----      -------   ----  ------
+"A0":                                    0x10
+  .vregs             uninit   0x000000   0x10  vregs.o [4]
+                            - 0x000010   0x10
+
+"P2", part 1 of 2:                        0x5
+  P2-1                        0x000010    0x5  <Init block>
+    .near.data       inited   0x000010    0x4  TempManage.o [1]
+    .near.data       inited   0x000014    0x1  TempSwitch.o [1]
+                            - 0x000015    0x5
+
+"P2", part 2 of 2:                       0x77
+  .near.bss          zero     0x000015   0x2f  thermometer.o [1]
+  .near.bss          zero     0x000044   0x1c  TempManage.o [1]
+  .near.bss          zero     0x000060    0xb  PWM.o [1]
+  .near.bss          zero     0x00006b    0x5  digitron.o [1]
+  .near.bss          zero     0x000070    0x4  digitron.o [1]
+  .near.bss          zero     0x000074    0x4  TempManage.o [1]
+  .near.bss          zero     0x000078    0x4  TempSwitch.o [1]
+  .near.bss          zero     0x00007c    0x4  TempSwitch.o [1]
+  .near.bss          zero     0x000080    0x4  thermometer.o [1]
+  .near.bss          zero     0x000084    0x4  thermometer.o [1]
+  .near.bss          zero     0x000088    0x4  tick.o [1]
+                            - 0x00008c   0x77
+
+"A1":                                   0x100
+  CSTACK                      0x001700  0x100  <Block>
+    CSTACK           uninit   0x001700  0x100  <Block tail>
+                            - 0x001800  0x100
+
+"A2":                                    0x80
+  INTVEC                      0x008000   0x80  <Block>
+    .intvec          const    0x008000   0x80  interrupt.o [4]
+                            - 0x008080   0x80
+
+"P3":                                   0xc28
+  .near_func.text    ro code  0x008080  0x407  float.o [4]
+  .near_func.text    ro code  0x008487   0xe1  vreg_util.o [4]
+  .near_func.text    ro code  0x008568   0xd7  pid.o [1]
+  .near_func.text    ro code  0x00863f   0xa0  TempManage.o [1]
+  .near_func.text    ro code  0x0086df   0x96  filter.o [1]
+  .near_func.text    ro code  0x008775   0x71  long_util.o [4]
+  .near_func.text    ro code  0x0087e6   0x64  stm8s_gpio.o [1]
+  .near_func.text    ro code  0x00884a   0x54  pid.o [1]
+  .near_func.text    ro code  0x00889e   0x3f  TempSwitch.o [1]
+  .near_func.text    ro code  0x0088dd   0x36  long.o [4]
+  .near_func.text    ro code  0x008913   0x35  thermometer.o [1]
+  .near_func.text    ro code  0x008948   0x33  digitron.o [1]
+  .near_func.text    ro code  0x00897b   0x32  PWM.o [1]
+  .near_func.text    ro code  0x0089ad   0x28  init_small.o [4]
+  .near_func.text    ro code  0x0089d5   0x27  PWM.o [1]
+  .near_func.text    ro code  0x0089fc   0x26  TempManage.o [1]
+  .near_func.text    ro code  0x008a22   0x22  pid.o [1]
+  .iar.init_table    const    0x008a44   0x12  - Linker created -
+  .near_func.text    ro code  0x008a56   0x1e  stm8s_it.o [1]
+  .near_func.text    ro code  0x008a74   0x1e  init_small.o [4]
+  .near_func.text    ro code  0x008a92   0x19  tick.o [1]
+  .near_func.text    ro code  0x008aab   0x18  led.o [1]
+  .near_func.text    ro code  0x008ac3   0x18  stm8s_tim4.o [1]
+  .near_func.text    ro code  0x008adb   0x18  dc_util.o [4]
+  .near_func.text    ro code  0x008af3   0x17  PWM.o [1]
+  .near_func.text    ro code  0x008b0a   0x17  PWM.o [1]
+  .near_func.text    ro code  0x008b21   0x14  PWM.o [1]
+  .near_func.text    ro code  0x008b35   0x14  init.o [4]
+  .near_func.text    ro code  0x008b49   0x13  led.o [1]
+  .near_func.text    ro code  0x008b5c   0x13  led.o [1]
+  .near_func.text    ro code  0x008b6f   0x13  cstartup.o [4]
+  .near_func.text    ro code  0x008b82   0x11  main.o [1]
+  .near_func.text    ro code  0x008b93   0x10  short.o [4]
+  .near_func.text    ro code  0x008ba3    0xf  tick.o [1]
+  .near_func.text    ro code  0x008bb2    0xd  PWM.o [1]
+  .near_func.text    ro code  0x008bbf    0xc  blower.o [1]
+  .near_func.text    ro code  0x008bcb    0xc  digitron.o [1]
+  .near_func.text    ro code  0x008bd7    0xa  filter.o [1]
+  .near_func.text    ro code  0x008be1    0xa  TempSwitch.o [1]
+  .near_func.text    ro code  0x008beb    0xa  TempSwitch.o [1]
+  .near_func.text    ro code  0x008bf5    0x9  stm8s_tim4.o [1]
+  .near_func.text    ro code  0x008bfe    0x9  TempManage.o [1]
+  .near_func.text    ro code  0x008c07    0x9  TempManage.o [1]
+  .near_func.text    ro code  0x008c10    0x9  TempSwitch.o [1]
+  .near_func.text    ro code  0x008c19    0x8  blower.o [1]
+  .near_func.text    ro code  0x008c21    0x8  thermometer.o [1]
+  .near_func.text    ro code  0x008c29    0x7  filter.o [1]
+  .near_func.text    ro code  0x008c30    0x7  pid.o [1]
+  .near_func.text    ro code  0x008c37    0x7  stm8s_gpio.o [1]
+  .near_func.text    ro code  0x008c3e    0x6  digitron.o [1]
+  .near_func.text    ro code  0x008c44    0x6  filter.o [1]
+  .near_func.text    ro code  0x008c4a    0x6  PWM.o [1]
+  .near_func.text    ro code  0x008c50    0x6  thermometer.o [1]
+  .near_func.text    ro code  0x008c56    0x6  tick.o [1]
+  .near_func.text    ro code  0x008c5c    0x5  pid.o [1]
+  .near_func.text    ro code  0x008c61    0x5  PWM.o [1]
+  .near_func.text    ro code  0x008c66    0x5  stm8s_tim4.o [1]
+  .near_func.text    ro code  0x008c6b    0x5  stm8s_tim4.o [1]
+  .near_func.text    ro code  0x008c70    0x5  TempSwitch.o [1]
+  .near_func.text    ro code  0x008c75    0x5  cexit.o [4]
+  Initializer bytes  const    0x008c7a    0x5  <for P2-1>
+  .near_func.text    ro code  0x008c7f    0x4  stm8s_gpio.o [1]
+  .near_func.text    ro code  0x008c83    0x4  TempSwitch.o [1]
+  .near_func.text    ro code  0x008c87    0x3  interrupt.o [4]
+  .near_func.text    ro code  0x008c8a    0x3  low_level_init.o [4]
+  .near_func.text    ro code  0x008c8d    0x3  exit.o [4]
+  .near_func.text    ro code  0x008c90    0x3  unhandled_exception.o [4]
+  .near_func.text    ro code  0x008c93    0x2  xxexit.o [3]
+  .near_func.text    ro code  0x008c95    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008c96    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008c97    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008c98    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008c99    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008c9a    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008c9b    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008c9c    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008c9d    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008c9e    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008c9f    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008ca0    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008ca1    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008ca2    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008ca3    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008ca4    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008ca5    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008ca6    0x1  stm8s_it.o [1]
+  .near_func.text    ro code  0x008ca7    0x1  stm8s_it.o [1]
+                            - 0x008ca8  0xc28
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address   Size
+          -------   ----
+Zero (__iar_zero_init2)
+    1 destination range, total size 0x77:
+          0x000015  0x77
+
+Copy (__iar_copy_init2)
+    1 source range, total size 0x5:
+          0x008c7a   0x5
+    1 destination range, total size 0x5:
+          0x000010   0x5
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                 ro code  ro data  rw data
+    ------                 -------  -------  -------
+C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj: [1]
+    PWM.o                      179                11
+    TempManage.o               216        4       36
+    TempSwitch.o               101        1        9
+    blower.o                    20
+    digitron.o                  69                 9
+    filter.o                   173
+    led.o                       62
+    main.o                      17
+    pid.o                      345
+    stm8s_gpio.o               111
+    stm8s_it.o                  49
+    stm8s_tim4.o                43
+    thermometer.o               67                55
+    tick.o                      46                 4
+    ------------------------------------------------
+    Total:                   1 498        5      124
+
+command line: [2]
+    ------------------------------------------------
+    Total:
+
+dbgstm8smn.a: [3]
+    xxexit.o                     2
+    ------------------------------------------------
+    Total:                       2
+
+dlstm8smn.a: [4]
+    cexit.o                      5
+    cstartup.o                  19
+    dc_util.o                   24
+    exit.o                       3
+    float.o                  1 031
+    init.o                      20
+    init_small.o                70
+    interrupt.o                  3      128
+    long.o                      54
+    long_util.o                113
+    low_level_init.o             3
+    short.o                     16
+    unhandled_exception.o        3
+    vreg_util.o                225
+    vregs.o                                       16
+    ------------------------------------------------
+    Total:                   1 589      128       16
+
+    Linker created                       18      256
+----------------------------------------------------
+    Grand Total:             3 089      151      396
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                    Address  Size  Type      Object
+-----                    -------  ----  ----      ------
+.iar.init_table$$Base   0x008a44         --   Gb  - Linker created -
+.iar.init_table$$Limit  0x008a56         --   Gb  - Linker created -
+?b0                     0x000000        Data  Gb  vregs.o [4]
+?b1                     0x000001        Data  Gb  vregs.o [4]
+?b10                    0x00000a        Data  Gb  vregs.o [4]
+?b11                    0x00000b        Data  Gb  vregs.o [4]
+?b12                    0x00000c        Data  Gb  vregs.o [4]
+?b13                    0x00000d        Data  Gb  vregs.o [4]
+?b14                    0x00000e        Data  Gb  vregs.o [4]
+?b15                    0x00000f        Data  Gb  vregs.o [4]
+?b2                     0x000002        Data  Gb  vregs.o [4]
+?b3                     0x000003        Data  Gb  vregs.o [4]
+?b4                     0x000004        Data  Gb  vregs.o [4]
+?b5                     0x000005        Data  Gb  vregs.o [4]
+?b6                     0x000006        Data  Gb  vregs.o [4]
+?b7                     0x000007        Data  Gb  vregs.o [4]
+?b8                     0x000008        Data  Gb  vregs.o [4]
+?b9                     0x000009        Data  Gb  vregs.o [4]
+?dc32_l1                0x008adb        Code  Gb  dc_util.o [4]
+?dc32_px                0x008ae8        Code  Gb  dc_util.o [4]
+?e0                     0x000001        Data  Gb  vregs.o [4]
+?e1                     0x000005        Data  Gb  vregs.o [4]
+?e2                     0x000009        Data  Gb  vregs.o [4]
+?e3                     0x00000d        Data  Gb  vregs.o [4]
+?epilogue_l2            0x0084ef        Code  Gb  vreg_util.o [4]
+?epilogue_l2_l3         0x0084ec        Code  Gb  vreg_util.o [4]
+?fadd32_l0_l0_0x        0x0080ab        Code  Gb  float.o [4]
+?fadd32_l0_l0_dc32      0x0080a6        Code  Gb  float.o [4]
+?fadd32_l0_l0_l1        0x0080ae        Code  Gb  float.o [4]
+?fcastf32s16_l0_x       0x008334        Code  Gb  float.o [4]
+?fcastf32u16_l0_x       0x00833b        Code  Gb  float.o [4]
+?fcasts16f32_x_l0       0x008359        Code  Gb  float.o [4]
+?fcmpge32_c_l0_0x       0x0082d2        Code  Gb  float.o [4]
+?fcmpge32_c_l0_dc32     0x0082cd        Code  Gb  float.o [4]
+?fcmplt32_c_l0_0x       0x0082de        Code  Gb  float.o [4]
+?fcmplt32_c_l0_dc32     0x0082d6        Code  Gb  float.o [4]
+?fcmplt32_c_l0_l1       0x0082db        Code  Gb  float.o [4]
+?fdiv32_l0_l0_dc32      0x00821a        Code  Gb  float.o [4]
+?fdiv32_l0_l0_l1        0x00821f        Code  Gb  float.o [4]
+?fmul32_l0_l0_0x        0x00817c        Code  Gb  float.o [4]
+?fmul32_l0_l0_l1        0x00817f        Code  Gb  float.o [4]
+?fsub32_l0_l0_0x        0x00809d        Code  Gb  float.o [4]
+?fsub32_l0_l0_l1        0x0080a0        Code  Gb  float.o [4]
+?inc32_0x_0x            0x0088e2        Code  Gb  long.o [4]
+?inc32_l0_l0            0x0088dd        Code  Gb  long.o [4]
+?l0                     0x000000        Data  Gb  vregs.o [4]
+?l1                     0x000004        Data  Gb  vregs.o [4]
+?l2                     0x000008        Data  Gb  vregs.o [4]
+?l3                     0x00000c        Data  Gb  vregs.o [4]
+?load32_0x_l0           0x0087ae        Code  Gb  long_util.o [4]
+?load32_0x_l1           0x0087bc        Code  Gb  long_util.o [4]
+?load32_0x_l2           0x0087ca        Code  Gb  long_util.o [4]
+?load32_0x_l3           0x0087d8        Code  Gb  long_util.o [4]
+?load32_asp_l0          0x0087a2        Code  Gb  long_util.o [4]
+?load32_dbsp_l0         0x00879d        Code  Gb  long_util.o [4]
+?load32_l0_0x           0x008785        Code  Gb  long_util.o [4]
+?load32_l0_asp          0x00877a        Code  Gb  long_util.o [4]
+?load32_l0_dbsp         0x008775        Code  Gb  long_util.o [4]
+?load32_l0_xsp          0x00877c        Code  Gb  long_util.o [4]
+?load32_l1_0x           0x008791        Code  Gb  long_util.o [4]
+?load32_xsp_l0          0x0087a4        Code  Gb  long_util.o [4]
+?mov_e0_e1              0x0084f6        Code  Gb  vreg_util.o [4]
+?mov_e0_e2              0x008503        Code  Gb  vreg_util.o [4]
+?mov_e0_e3              0x008510        Code  Gb  vreg_util.o [4]
+?mov_e1_e0              0x00851d        Code  Gb  vreg_util.o [4]
+?mov_e1_e2              0x00852a        Code  Gb  vreg_util.o [4]
+?mov_e1_e3              0x008537        Code  Gb  vreg_util.o [4]
+?mov_e2_e0              0x008544        Code  Gb  vreg_util.o [4]
+?mov_e3_e0              0x008551        Code  Gb  vreg_util.o [4]
+?mov_e3_e1              0x00855e        Code  Gb  vreg_util.o [4]
+?mov_l0_l1              0x0084f3        Code  Gb  vreg_util.o [4]
+?mov_l0_l2              0x008500        Code  Gb  vreg_util.o [4]
+?mov_l0_l3              0x00850d        Code  Gb  vreg_util.o [4]
+?mov_l1_l0              0x00851a        Code  Gb  vreg_util.o [4]
+?mov_l1_l2              0x008527        Code  Gb  vreg_util.o [4]
+?mov_l1_l3              0x008534        Code  Gb  vreg_util.o [4]
+?mov_l2_l0              0x008541        Code  Gb  vreg_util.o [4]
+?mov_l3_l0              0x00854e        Code  Gb  vreg_util.o [4]
+?mov_l3_l1              0x00855b        Code  Gb  vreg_util.o [4]
+?mov_w1_w3              0x0084f9        Code  Gb  vreg_util.o [4]
+?mov_w1_w5              0x008506        Code  Gb  vreg_util.o [4]
+?mov_w1_w7              0x008513        Code  Gb  vreg_util.o [4]
+?mov_w3_w1              0x008520        Code  Gb  vreg_util.o [4]
+?mov_w3_w5              0x00852d        Code  Gb  vreg_util.o [4]
+?mov_w3_w7              0x00853a        Code  Gb  vreg_util.o [4]
+?mov_w5_w1              0x008547        Code  Gb  vreg_util.o [4]
+?mov_w7_w1              0x008554        Code  Gb  vreg_util.o [4]
+?mov_w7_w3              0x008561        Code  Gb  vreg_util.o [4]
+?pop_l0                 0x0084b8        Code  Gb  vreg_util.o [4]
+?pop_l1                 0x0084c3        Code  Gb  vreg_util.o [4]
+?pop_l2                 0x0084ce        Code  Gb  vreg_util.o [4]
+?pop_l3                 0x0084d9        Code  Gb  vreg_util.o [4]
+?push_l0                0x008487        Code  Gb  vreg_util.o [4]
+?push_l1                0x00848c        Code  Gb  vreg_util.o [4]
+?push_l2                0x008491        Code  Gb  vreg_util.o [4]
+?push_l3                0x008496        Code  Gb  vreg_util.o [4]
+?sext32_l0_x            0x008908        Code  Gb  long.o [4]
+?smod16_y_x_y           0x008b93        Code  Gb  short.o [4]
+?sub32_l0_l0_0x         0x0088f0        Code  Gb  long.o [4]
+?w0                     0x000000        Data  Gb  vregs.o [4]
+?w1                     0x000002        Data  Gb  vregs.o [4]
+?w2                     0x000004        Data  Gb  vregs.o [4]
+?w3                     0x000006        Data  Gb  vregs.o [4]
+?w4                     0x000008        Data  Gb  vregs.o [4]
+?w5                     0x00000a        Data  Gb  vregs.o [4]
+?w6                     0x00000c        Data  Gb  vregs.o [4]
+?w7                     0x00000e        Data  Gb  vregs.o [4]
+ADC1_IRQHandler         0x008ca6   0x1  Code  Gb  stm8s_it.o [1]
+AWU_IRQHandler          0x008c97   0x1  Code  Gb  stm8s_it.o [1]
+BodyTemp                0x000010   0x4  Data  Gb  TempManage.o [1]
+CLK_IRQHandler          0x008c98   0x1  Code  Gb  stm8s_it.o [1]
+CSTACK$$Base            0x001700         --   Gb  - Linker created -
+CSTACK$$Limit           0x001800         --   Gb  - Linker created -
+Digitron                0x00006b   0x5  Data  Gb  digitron.o [1]
+EEPROM_EEC_IRQHandler   0x008ca7   0x1  Code  Gb  stm8s_it.o [1]
+EXTI_PORTA_IRQHandler   0x008c99   0x1  Code  Gb  stm8s_it.o [1]
+EXTI_PORTB_IRQHandler   0x008c9a   0x1  Code  Gb  stm8s_it.o [1]
+EXTI_PORTC_IRQHandler   0x008c9b   0x1  Code  Gb  stm8s_it.o [1]
+EXTI_PORTD_IRQHandler   0x008c9c   0x1  Code  Gb  stm8s_it.o [1]
+EXTI_PORTE_IRQHandler   0x008c9d   0x1  Code  Gb  stm8s_it.o [1]
+GPIO_Init               0x0087e6  0x64  Code  Gb  stm8s_gpio.o [1]
+GPIO_WriteHigh          0x008c37   0x7  Code  Gb  stm8s_gpio.o [1]
+GPIO_WriteLow           0x008c7f   0x4  Code  Gb  stm8s_gpio.o [1]
+I2C_IRQHandler          0x008ca5   0x1  Code  Gb  stm8s_it.o [1]
+INTVEC$$Base            0x008000         --   Gb  - Linker created -
+INTVEC$$Limit           0x008080         --   Gb  - Linker created -
+PWM_disable             0x008b0a  0x17  Code  Gb  PWM.o [1]
+PWM_enable              0x008c61   0x5  Code  Gb  PWM.o [1]
+PWM_init                0x008b21  0x14  Code  Gb  PWM.o [1]
+PWM_period_call         0x00897b  0x32  Code  Gb  PWM.o [1]
+PWM_set_duty_cycles     0x0089d5  0x27  Code  Gb  PWM.o [1]
+Region$$Table$$Base     0x008a44         --   Gb  - Linker created -
+Region$$Table$$Limit    0x008a56         --   Gb  - Linker created -
+SPI_IRQHandler          0x008c9e   0x1  Code  Gb  stm8s_it.o [1]
+SwitchState             0x000014   0x1  Data  Gb  TempSwitch.o [1]
+TIM1_CAP_COM_IRQHandler
+                        0x008ca0   0x1  Code  Gb  stm8s_it.o [1]
+TIM1_UPD_OVF_TRG_BRK_IRQHandler
+                        0x008c9f   0x1  Code  Gb  stm8s_it.o [1]
+TIM2_CAP_COM_IRQHandler
+                        0x008ca2   0x1  Code  Gb  stm8s_it.o [1]
+TIM2_UPD_OVF_BRK_IRQHandler
+                        0x008ca1   0x1  Code  Gb  stm8s_it.o [1]
+TIM4_ClearFlag          0x008c66   0x5  Code  Gb  stm8s_tim4.o [1]
+TIM4_ClearITPendingBit  0x008c6b   0x5  Code  Gb  stm8s_tim4.o [1]
+TIM4_ITConfig           0x008ac3  0x18  Code  Gb  stm8s_tim4.o [1]
+TIM4_TimeBaseInit       0x008bf5   0x9  Code  Gb  stm8s_tim4.o [1]
+TIM4_UPD_OVF_IRQHandler
+                        0x008a56  0x1e  Code  Gb  stm8s_it.o [1]
+TLI_IRQHandler          0x008c96   0x1  Code  Gb  stm8s_it.o [1]
+TRAP_IRQHandler         0x008c95   0x1  Code  Gb  stm8s_it.o [1]
+Thermometer             0x000080   0x4  Data  Gb  thermometer.o [1]
+UART1_RX_IRQHandler     0x008ca4   0x1  Code  Gb  stm8s_it.o [1]
+UART1_TX_IRQHandler     0x008ca3   0x1  Code  Gb  stm8s_it.o [1]
+__exit                  0x008c93   0x2  Code  Gb  xxexit.o [3]
+__iar_copy_init2        0x0089ad        Code  Gb  init_small.o [4]
+__iar_data_init2        0x008b35  0x14  Code  Gb  init.o [4]
+__iar_program_start     0x008b6f        Code  Gb  cstartup.o [4]
+__iar_unhandled_exception
+                        0x008c90        Code  Gb  unhandled_exception.o [4]
+__iar_zero_init2        0x008a74        Code  Gb  init_small.o [4]
+__intvec                0x008000        Data  Gb  interrupt.o [4]
+__low_level_init        0x008c8a   0x3  Code  Gb  low_level_init.o [4]
+_exit                   0x008c75        Code  Gb  cexit.o [4]
+_interrupt_1            0x008c95        Code  Gb  stm8s_it.o [1]
+_interrupt_12           0x008c9e        Code  Gb  stm8s_it.o [1]
+_interrupt_13           0x008c9f        Code  Gb  stm8s_it.o [1]
+_interrupt_14           0x008ca0        Code  Gb  stm8s_it.o [1]
+_interrupt_15           0x008ca1        Code  Gb  stm8s_it.o [1]
+_interrupt_16           0x008ca2        Code  Gb  stm8s_it.o [1]
+_interrupt_19           0x008ca3        Code  Gb  stm8s_it.o [1]
+_interrupt_2            0x008c96        Code  Gb  stm8s_it.o [1]
+_interrupt_20           0x008ca4        Code  Gb  stm8s_it.o [1]
+_interrupt_21           0x008ca5        Code  Gb  stm8s_it.o [1]
+_interrupt_24           0x008ca6        Code  Gb  stm8s_it.o [1]
+_interrupt_25           0x008a56        Code  Gb  stm8s_it.o [1]
+_interrupt_26           0x008ca7        Code  Gb  stm8s_it.o [1]
+_interrupt_3            0x008c97        Code  Gb  stm8s_it.o [1]
+_interrupt_4            0x008c98        Code  Gb  stm8s_it.o [1]
+_interrupt_5            0x008c99        Code  Gb  stm8s_it.o [1]
+_interrupt_6            0x008c9a        Code  Gb  stm8s_it.o [1]
+_interrupt_7            0x008c9b        Code  Gb  stm8s_it.o [1]
+_interrupt_8            0x008c9c        Code  Gb  stm8s_it.o [1]
+_interrupt_9            0x008c9d        Code  Gb  stm8s_it.o [1]
+blower_init             0x008bbf   0xc  Code  Gb  blower.o [1]
+blower_on               0x008c19   0x8  Code  Gb  blower.o [1]
+digitron_init           0x008bcb   0xc  Code  Gb  digitron.o [1]
+digitron_set_value      0x008c3e   0x6  Code  Gb  digitron.o [1]
+digitron_task_loop      0x008948  0x33  Code  Gb  digitron.o [1]
+digitron_task_loop::tick
+                        0x000070   0x4  Data  Lc  digitron.o [1]
+exit                    0x008c8d   0x3  Code  Gb  exit.o [4]
+filter                  0x000015  0x2f  Data  Gb  thermometer.o [1]
+led_init                0x008aab  0x18  Code  Gb  led.o [1]
+led_off                 0x008b5c  0x13  Code  Gb  led.o [1]
+led_on                  0x008b49  0x13  Code  Gb  led.o [1]
+main                    0x008b82  0x11  Code  Gb  main.o [1]
+pid                     0x000044  0x1c  Data  Gb  TempManage.o [1]
+pid_init                0x00884a  0x54  Code  Gb  pid.o [1]
+pid_process             0x008568  0xd7  Code  Gb  pid.o [1]
+pid_reset               0x008a22  0x22  Code  Gb  pid.o [1]
+pwm                     0x000060   0xb  Data  Gb  PWM.o [1]
+smooth_filter           0x0086df  0x96  Code  Gb  filter.o [1]
+switch_get_sate         0x008c83   0x4  Code  Gb  TempSwitch.o [1]
+switch_init             0x008c70   0x5  Code  Gb  TempSwitch.o [1]
+switch_task_loop        0x00889e  0x3f  Code  Gb  TempSwitch.o [1]
+switch_task_loop::delay2change
+                        0x00007c   0x4  Data  Lc  TempSwitch.o [1]
+switch_task_loop::tick  0x000078   0x4  Data  Lc  TempSwitch.o [1]
+sysTick                 0x000088   0x4  Data  Gb  tick.o [1]
+temp_manage_init        0x0089fc  0x26  Code  Gb  TempManage.o [1]
+temp_manage_task_loop   0x00863f  0xa0  Code  Gb  TempManage.o [1]
+temp_manage_task_loop::tick
+                        0x000074   0x4  Data  Lc  TempManage.o [1]
+thermometer_get_temp    0x008c50   0x6  Code  Gb  thermometer.o [1]
+thermometer_init        0x008c21   0x8  Code  Gb  thermometer.o [1]
+thermometer_task_loop   0x008913  0x35  Code  Gb  thermometer.o [1]
+thermometer_task_loop::tick
+                        0x000084   0x4  Data  Lc  thermometer.o [1]
+tick_increase           0x008ba3   0xf  Code  Gb  tick.o [1]
+tick_init               0x008a92  0x19  Code  Gb  tick.o [1]
+tick_value              0x008c56   0x6  Code  Gb  tick.o [1]
+
+
+[1] = C:\Users\scm\Desktop\BodyTemperatureHeadband\Project\Release\Obj
+[2] = command line
+[3] = dbgstm8smn.a
+[4] = dlstm8smn.a
+
+  3 089 bytes of readonly  code memory
+    151 bytes of readonly  data memory
+    396 bytes of readwrite data memory
+
+Errors: none
+Warnings: none

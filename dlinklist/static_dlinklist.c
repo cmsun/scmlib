@@ -12,12 +12,13 @@
 */
 
 #include <string.h>
+#include <stdio.h>
 #include "utility.h"
 #include "static_dlinklist.h"
 
 static DLLNodeBase *dllist_node_malloc(DLinkList *dllist)
 {
-    DLLNodeBase *temp, *node = NULL;
+    DLLNodeBase *node = NULL, *temp;
     for(int i = 0; i < dllist->node_cnt; ++i)
     {
         temp = (DLLNodeBase *)((unsigned char *)dllist->node_array + (dllist->node_size * i));
@@ -28,7 +29,7 @@ static DLLNodeBase *dllist_node_malloc(DLinkList *dllist)
             break;
         }
     }
-    return (DLLNodeBase *)node;
+    return node;
 }
 
 static inline void dllist_node_free(DLLNodeBase *node)
@@ -43,7 +44,7 @@ void dllist_init(DLinkList *dllist, void *node_array, int array_size, int node_c
         dllist->node_array = node_array;
         dllist->node_size = array_size/node_cnt;
         dllist->node_cnt = node_cnt;
-        dllist->node_data_capacity = dllist->node_size - sizeof(DLLNodeBase) + 1;
+        dllist->node_data_max = dllist->node_size - sizeof(DLLNodeBase) + 1;
         dllist->head = NULL;
         dllist->tail = NULL;
         dllist->length = 0;
@@ -52,63 +53,82 @@ void dllist_init(DLinkList *dllist, void *node_array, int array_size, int node_c
 
 void dllist_clear(DLinkList *dllist)
 {
+    DLLNodeBase *node;
     if(dllist != NULL)
     {
         while(dllist->head != NULL)
         {
-            DLLNodeBase *temp = dllist->head;
-            dllist->head = temp->next;
-            dllist_node_free(temp);
+            node = dllist->head;
+            dllist->head = node->next;
+            dllist_node_free(node);
         }
         dllist->length = 0;
         dllist->tail = NULL;
     }
 }
 
-bool dllist_assign(DLinkList *dllist, const void *data, int len, int count)
-{
-    if(dllist == NULL || data == NULL || count <= 0)
-        return false;
-    if(!dllist_empty(dllist))
-        dllist_clear(dllist);
-    for(int i = 0; i < count; ++i)
+//data：数组首原素地址
+//data_size: 数组长度
+//element_cnt：数组中元素的数量
+int dllist_assign(DLinkList *dllist, const void *array, int array_size, int element_cnt)
+{   
+    DLLNodeBase *node;
+    int element_size;
+
+    if(dllist == NULL || array == NULL)
     {
-        DLLNodeBase *node = dllist_node_malloc(dllist);
+        return 0;
+    }
+    
+    element_size = array_size / element_cnt;
+    for(int i = 0; i < element_cnt; ++i)
+    {
+        node = dllist_node_malloc(dllist);
         if(node == NULL)
-            goto ERROR;
-        node->data_size = min(len, dllist->node_data_capacity);
-        memcpy(node->data, (unsigned char *)data + i*node->data_size, node->data_size);
+        {
+            dllist->length += i;
+            return i;
+        }
+        node->data_size = min(element_size, dllist->node_data_max);
+        memcpy(node->data, (unsigned char *)array + i*node->data_size, node->data_size);
         node->prev = dllist->tail;
         node->next = NULL;
         if(dllist->tail == NULL)
+        {
             dllist->head = dllist->tail = node;
+        }
         else
+        {
             dllist->tail->next = node;
+        }
         dllist->tail = node;
     }
-    dllist->length = count;
-    return true;
-    
-ERROR:
-    dllist_clear(dllist);
-    return false;
+    dllist->length += element_cnt;
+    return element_cnt;
 }
 
 bool dllist_push_front(DLinkList *dllist, const void *data, int len)
 {
+    DLLNodeBase *node;
     if(dllist != NULL && data != NULL)
     {
-        DLLNodeBase *node = dllist_node_malloc(dllist);
+        node = dllist_node_malloc(dllist);
         if(node == NULL)
+        {
             return false;
-        node->data_size = min(len, dllist->node_data_capacity);
+        }
+        node->data_size = min(len, dllist->node_data_max);
         memcpy(node->data, data, node->data_size);
         node->prev = NULL;
         node->next = dllist->head;
         if(dllist->head != NULL)
+        {
             dllist->head->prev = node;
+        }
         else
+        {
             dllist->tail = node;
+        }
         dllist->head = node;
         dllist->length++;
         return true;
@@ -118,19 +138,26 @@ bool dllist_push_front(DLinkList *dllist, const void *data, int len)
 
 bool dllist_push_back(DLinkList *dllist, const void *data, int len)
 {
+    DLLNodeBase *node;
     if(dllist != NULL && data != NULL)
     {
-        DLLNodeBase *node = dllist_node_malloc(dllist);
+        node = dllist_node_malloc(dllist);
         if(node == NULL)
+        {
             return false;
-        node->data_size = min(len, dllist->node_data_capacity);
+        }
+        node->data_size = min(len, dllist->node_data_max);
         memcpy(node->data, data, node->data_size);
         node->prev = dllist->tail;
         node->next = NULL;
         if(dllist->tail != NULL)
+        {
             dllist->tail->next = node;
+        }
         else
+        {
             dllist->head = node;
+        }
         dllist->tail = node;
         dllist->length++;
         return true;
@@ -140,15 +167,20 @@ bool dllist_push_back(DLinkList *dllist, const void *data, int len)
 
 bool dllist_pop_front(DLinkList *dllist)
 {
+    DLLNodeBase *head, *next;
     if(dllist != NULL && !dllist_empty(dllist))
     {
-        DLLNodeBase *head = dllist->head;
-        DLLNodeBase *next = head->next;
+        head = dllist->head;
+        next = head->next;
         dllist->head = next;
         if(next != NULL)
+        {
             next->prev = NULL;
+        }
         else
+        {
             dllist->tail = NULL;
+        }
         dllist_node_free(head);
         dllist->length--;
         return true;
@@ -158,15 +190,20 @@ bool dllist_pop_front(DLinkList *dllist)
 
 bool dllist_pop_back(DLinkList *dllist)
 {
+    DLLNodeBase *tail, *prev;
     if(dllist != NULL && !dllist_empty(dllist))
     {
-        DLLNodeBase *tail = dllist->tail;
-        DLLNodeBase *prev = tail->prev;
+        tail = dllist->tail;
+        prev = tail->prev;
         dllist->tail = prev;
         if(dllist->tail != NULL)
+        {
             dllist->tail->next = NULL;
+        }
         else
+        {
             dllist->head = NULL;
+        }
         dllist_node_free(tail);
         dllist->length--;
         return true;
@@ -176,24 +213,36 @@ bool dllist_pop_back(DLinkList *dllist)
 
 bool dllist_index_insert(DLinkList *dllist, int index, const void *data, int len)
 {
-    if(dllist == NULL || data == NULL)
-        return false;
+    DLLNodeBase *prevNode, *node;
 
-    if(dllist_empty(dllist) || index < 1)
+    if(dllist == NULL || data == NULL)
+    {
+        return false;
+    }
+
+    if(dllist_empty(dllist) || index <= 0)
+    {
         return dllist_push_front(dllist, data, len);
-    else if(index >= dllist->length)
+    }
+    else if(index >= dllist->length - 1)
+    {
         return dllist_push_back(dllist, data, len);
+    }
     else
     {
-        DLLNodeBase *node = dllist_node_malloc(dllist);
+        prevNode = dllist->head;
+        node = dllist_node_malloc(dllist);
         if(node == NULL)
+        {
             return false;
-        node->data_size = min(len, dllist->node_data_capacity);
+        }
+        node->data_size = min(len, dllist->node_data_max);
         memcpy(node->data, data, node->data_size);
-        DLLNodeBase *prevNode = dllist->head;
         //新结点插入在prevNode的后面
         while(--index)
+        {
             prevNode = prevNode->next;
+        }
         node->prev = prevNode;
         node->next = prevNode->next;
         prevNode->next->prev = node;
@@ -205,20 +254,28 @@ bool dllist_index_insert(DLinkList *dllist, int index, const void *data, int len
 
 bool dllist_index_delete(DLinkList *dllist, int index)
 {
+    DLLNodeBase *node;
+
     if(dllist != NULL && !dllist_empty(dllist))
     {
-        if(index < 1)
+        if(index <= 0)
+        {
             return dllist_pop_front(dllist);
+        }
         else if(index >= dllist->length - 1)
+        {
             return dllist_pop_back(dllist);
+        }
         else 
         {
-            DLLNodeBase *delNode = dllist->head;
+            node = dllist->head;
             while(index--)
-                delNode = delNode->next;
-            delNode->prev->next = delNode->next;
-            delNode->next->prev = delNode->prev;
-            dllist_node_free(delNode);
+            {
+                node = node->next;
+            }
+            node->prev->next = node->next;
+            node->next->prev = node->prev;
+            dllist_node_free(node);
             dllist->length--;
             return true;
         }
@@ -226,9 +283,10 @@ bool dllist_index_delete(DLinkList *dllist, int index)
     return false;
 }
 
-int dllist_key_index(DLinkList *dllist, Equal equal, const void *key)
+int dllist_key_index(DLinkList *dllist, EqualFun equal, const void *key)
 {
-    int index = 0, found = 0;
+    int index = 0;
+    bool found = false;
     if(dllist != NULL && equal != NULL && key != NULL)
     {
         for(DLLIter iter = dllist_begin(dllist);
@@ -237,7 +295,7 @@ int dllist_key_index(DLinkList *dllist, Equal equal, const void *key)
         {
             if(equal(key, iter->data))
             {
-                found = 1;
+                found = true;
                 break;
             }
             index++;
@@ -246,37 +304,34 @@ int dllist_key_index(DLinkList *dllist, Equal equal, const void *key)
     return found ? index : -1;
 }
 
-bool dllist_key_delete(DLinkList *dllist, Equal equal, const void *key)
+bool dllist_key_delete(DLinkList *dllist, EqualFun equal, const void *key)
 {
     if(dllist != NULL && equal && key != NULL)
     {
         DLLIter iter = dllist_find_first(dllist, equal, key);
-        return dllist_iter_delete(dllist, &iter);
+        return dllist_iter_delete(dllist, iter);
     }
     return false;
 }
 
-/*
-********************************************************************************
-* Note : 若*iter == dllist_begin() 则插入最前面，相当于dllist_push_front()
-*        若*iter == dllist_end() 则插入最后面，相当于dllist_push_back()
-*        其它情况都是插入在*iter的前面
-********************************************************************************
-*/
-bool dllist_iter_insert(DLinkList *dllist, DLLIter iter, const void *data, int len)
+bool dllist_iter_insert_front(DLinkList *dllist, DLLIter iter, const void *data, int len)
 {
+    DLLNodeBase *node;
+
     if(dllist != NULL && data != NULL)
     {
-        if(dllist_empty(dllist) || iter == dllist_begin(dllist))
+        if(iter == NULL || iter == dllist->head)
+        {
             return dllist_push_front(dllist, data, len);
-        else if(iter == dllist_end())
-            return dllist_push_back(dllist, data, len);
+        }
         else
         {
-            DLLNodeBase *node = dllist_node_malloc(dllist);
+            node = dllist_node_malloc(dllist);
             if(node == NULL)
+            {
                 return false;
-            node->data_size = min(len, dllist->node_data_capacity);
+            }
+            node->data_size = min(len, dllist->node_data_max);
             memcpy(node->data, data, node->data_size);
             node->prev = iter->prev;
             node->next = iter;
@@ -289,49 +344,124 @@ bool dllist_iter_insert(DLinkList *dllist, DLLIter iter, const void *data, int l
     return false;
 }
 
-/*
-********************************************************************************
-* Note : *iter != dllist_end() 时删除*iter对应的节点，否则不删除。
-*        原因是dllist_find_first()和dllist_find_last()在找不到应对的数剧时会返回
-*        dllist_end()，如果这时候删除就会删除错误。 
-*        删除成功后会使迭代器自动向后走一个节点，如果在循环中使用迭代进行删除，则
-*        判断删除成功后要使用goto返回前面的操作，否则会错过下个节点的操作。
-********************************************************************************
-*/
-bool dllist_iter_delete(DLinkList *dllist, DLLIter *iter)
+bool dllist_iter_insert_back(DLinkList *dllist, DLLIter iter, const void *data, int len)
 {
-    if(dllist != NULL && iter != NULL && *iter != dllist_end())
+    DLLNodeBase *node;
+
+    if(dllist != NULL && data != NULL)
     {
-        bool result = 0;
-        if(*iter == dllist_begin(dllist))
+        if(iter == NULL || iter == dllist->tail)
         {
-            if((result = dllist_pop_front(dllist)) != 0)
-                *iter = dllist_begin(dllist);
-            return result;
-        }
-        else if(dllist_next(*iter) == dllist_end())
-        {
-            if((result = dllist_pop_back(dllist)) != 0)
-                *iter = dllist_end();
-            return result;
+            return dllist_push_back(dllist, data, len);
         }
         else
         {
-            DLLNodeBase *preNode = (*iter)->prev;
-            DLLNodeBase *currNode = *iter;
-            DLLNodeBase *nextNode = (*iter)->next;
-            preNode->next = nextNode;
-            nextNode->prev = preNode;
-            dllist_node_free(currNode);
-            *iter = nextNode;
-            dllist->length--;
+            node = dllist_node_malloc(dllist);
+            if(node == NULL)
+            {
+                return false;
+            }
+            node->data_size = min(len, dllist->node_data_max);
+            memcpy(node->data, data, node->data_size);
+            node->prev = iter;
+            node->next = iter->next;
+            iter->next->prev = node;
+            iter->next = node;
+            dllist->length++;
             return true;
         }
     }
     return false;
 }
 
-DLLIter dllist_find_first(DLinkList *dllist, Equal equal, const void *key)
+/*
+********************************************************************************
+* Note : 删除成功后会使返回前一个迭代器, 使用示例：
+    for(DLLIter iter; iter != dllist_end(); iter = dllist_next(iter))
+    {
+        if(*(int *)dllist_data(iter, NULL) == 5)
+        {
+            iter = dllist_delete(iter);
+        }
+    }
+********************************************************************************
+*/
+DLLIter dllist_iter_delete(DLinkList *dllist, DLLIter iter)
+{
+    DLLIter prev = NULL;
+    DLLNodeBase *prevNode, *currNode, *nextNode;
+    
+    if(dllist != NULL && iter != NULL)
+    {
+        prev = iter->prev;
+        
+        if(iter == dllist_begin(dllist))
+        {
+            if(dllist_pop_front(dllist) != 0)
+            {
+                iter = dllist_begin(dllist);
+            }
+        }
+        else if(dllist_next(iter) == dllist_end())
+        {
+            if(dllist_pop_back(dllist) != 0)
+            {
+                iter = dllist_end();
+            }
+        }
+        else
+        {
+            prevNode = iter->prev;
+            currNode = iter;
+            nextNode = iter->next;
+            
+            prevNode->next = nextNode;
+            nextNode->prev = prevNode;
+            dllist_node_free(currNode);
+            dllist->length--;
+        }
+    }
+    return prev;
+}
+
+/*
+********************************************************************************
+* Note : 删除成功后会使返回前一个迭代器。
+         cnt < 0 则删除iter及后面所有的节点
+         cnt == 0 不删除任何节点，返回iter
+         cnt > 0 删除n个节点
+********************************************************************************
+*/
+DLLIter dllist_iter_erase(DLinkList *dllist, DLLIter iter, int cnt)
+{
+    DLLIter prev = iter;
+    
+    if(dllist != NULL && iter != NULL)
+    {
+        if(cnt < 0)
+        {
+            prev = iter->prev;
+            for(; iter != dllist_end(); iter = dllist_next(iter))
+            {
+                iter = dllist_iter_delete(dllist, iter);
+            }
+        }
+        else if(cnt > 0)
+        {
+            prev = iter->prev;
+            for(int i = 0;
+                i < cnt && iter != dllist_end();
+                ++i, iter = dllist_next(iter))
+            {
+                iter = dllist_iter_delete(dllist, iter);
+            }
+        }
+    }
+    
+    return prev;
+}
+
+DLLIter dllist_find_first(DLinkList *dllist, EqualFun equal, const void *key)
 {
     if(dllist != NULL && equal != NULL && key != NULL)
     {
@@ -340,28 +470,32 @@ DLLIter dllist_find_first(DLinkList *dllist, Equal equal, const void *key)
             iter = dllist_next(iter))
         {
             if(equal(key, iter->data))
+            {
                 return iter;
+            }
         }
     }
     return dllist_end();
 }
 
-DLLIter dllist_find_last(DLinkList *dllist, Equal equal, const void *key)
+DLLIter dllist_find_last(DLinkList *dllist, EqualFun equal, const void *key)
 {
     if(dllist != NULL && equal != NULL && key != NULL)
     {
-        for(RDLLIter riter = dllist_rbegin(dllist);
-            riter != dllist_rend();
-            riter = dllist_rnext(riter))
+        for(DLLIter riter = dllist_rbegin(dllist);
+            riter != dllist_end();
+            riter = dllist_prev(riter))
         {
             if(equal(key, riter->data))
+            {
                 return riter;
+            }
         }
     }
-    return dllist_rend();
+    return dllist_end();
 }
 
-int dllist_count(DLinkList *dllist, Equal equal, const void *key)
+int dllist_count(DLinkList *dllist, EqualFun equal, const void *key)
 {
     int count = 0;
     if(dllist != NULL && equal != NULL && key != NULL)
@@ -371,7 +505,9 @@ int dllist_count(DLinkList *dllist, Equal equal, const void *key)
             iter = dllist_next(iter))
         {
             if(equal(key, iter->data))
+            {
                 count++;
+            }
         }
     }
     return count;
@@ -385,7 +521,9 @@ void *dllist_at(DLinkList *dllist, int index, int *len)
     {
         DLLIter iter = dllist_begin(dllist);
         while(index--)
+        {
             iter = dllist_next(iter);
+        }
         data = dllist_data(iter, len);
     }
     return data;
@@ -416,51 +554,79 @@ static DLLNodeBase *dllist_middle(DLLNodeBase *low, DLLNodeBase *high)
     return slow;
 }
 
-static DLLNodeBase *dllist_partition(DLinkList *dllist, DLLNodeBase *low, DLLNodeBase *high, Equal compare)
+static DLLNodeBase *dllist_partition(DLinkList *dllist, DLLNodeBase *low, DLLNodeBase *high, CmpFun compare)
 {
     //如果每次都选第一个点作为基准点，当链表已经有序时就会出现最坏情况。所以最好选择中间点作为基准点。
     //void *pivot = low->data; //不能总是选第一个结点作为基准点。
-    DLLNodeBase *middleNode = dllist_middle(low, high);
-    void *pivot = &(middleNode->data);
-    memcpy(middleNode->data, low->data, dllist->node_data_capacity);
+    DLLNodeBase *pivot, *middle;
+
+    pivot = dllist_node_malloc(dllist);
+    if(pivot == NULL)
+    {
+        return low;
+    }
+
+    middle = dllist_middle(low, high);
+    memcpy(&pivot->data, &middle->data, middle->data_size);
+    memcpy(&middle->data, &low->data, low->data_size);
+    
     while(low != high)
     {
-        while(low != high && compare(&(high->data), pivot) >= 0)
+        while(low != high && compare(&high->data, &pivot->data) >= 0)
+        {
             high = high->prev;
+        }
+        
         if(low != high)
         {
-            memcpy(low->data, high->data, dllist->node_data_capacity);
+            memcpy(&low->data, &high->data, high->data_size);
             low = low->next;
         }
 
-        while(low != high && compare(&(low->data), pivot) <= 0)
+        while(low != high && compare(&low->data, &pivot->data) <= 0)
+        {
             low = low->next;
+        }
+        
         if(low != high)
         {
-            memcpy(high->data, low->data, dllist->node_data_capacity);
+            memcpy(&high->data, &low->data, low->data_size);
             high = high->prev;
         }
     }
-    memcpy(low->data, pivot, dllist->node_data_capacity);
+    
+    memcpy(&low->data, &pivot->data, pivot->data_size);
+    dllist_node_free(pivot);
+
     return low;
 }
 
-static void dllist_qsort_recursive(DLinkList *dllist, DLLNodeBase *low, DLLNodeBase *high, Equal compare)
+static void dllist_qsort_recursive(DLinkList *dllist, DLLNodeBase *low, DLLNodeBase *high, CmpFun compare)
 {
+    DLLNodeBase *pivot;
+
     if(low != high)
     {
-        DLLNodeBase *pivot = dllist_partition(dllist, low, high, compare);
+        pivot = dllist_partition(dllist, low, high, compare);
+        
         if(low != pivot && low != pivot->prev)
+        {
             dllist_qsort_recursive(dllist, low, pivot->prev, compare);
+        }
+        
         if(high != pivot && high != pivot->next)
+        {
             dllist_qsort_recursive(dllist, pivot->next, high, compare);
+        }
     }
 }
 
-void dllist_quick_sort(DLinkList *dllist, int (*compare)(const void*, const void*))
+void dllist_quick_sort(DLinkList *dllist, CmpFun compare)
 {
     if(dllist != NULL && compare != NULL && dllist->length > 1)
+    {
         dllist_qsort_recursive(dllist, dllist->head, dllist->tail, compare);
+    }
 }
 
 static inline void dllist_append_node(DLLNodeBase **curr, DLLNodeBase **next)
@@ -474,17 +640,24 @@ static inline void dllist_append_node(DLLNodeBase **curr, DLLNodeBase **next)
 //中间分割链表，并返回分割出的新链表
 static DLLNodeBase *dllist_middle_split(DLLNodeBase *head)
 {
-    if(head == NULL) return NULL;
-    DLLNodeBase *slow = head, *fast = head;
+    DLLNodeBase *slow = head, *fast = head, *newlist;
+
+    if(head == NULL) 
+    {
+        return NULL;
+    }
+    
     while(fast != NULL && fast->next != NULL)
     {
         fast = fast->next->next;
         //当链表只有两个节点时，最终slow应该指向第一个节点。
         //这样就能将只有两个节点的链表拆分成两个分别有一个节点的链表。
         if(fast != NULL)
+        {
             slow = slow->next;
+        }
     }
-    DLLNodeBase *newlist = slow->next;
+    newlist = slow->next;
     newlist->prev = NULL;
     slow->next = NULL;
     return newlist;
@@ -492,8 +665,15 @@ static DLLNodeBase *dllist_middle_split(DLLNodeBase *head)
 
 static DLLNodeBase *dllist_merge_recursive(DLLNodeBase *head, int (*compare)(const void*, const void*))
 {
-    if(head == NULL) return NULL;
-    if(head->next == NULL) return head;
+    if(head == NULL)
+    {
+        return NULL;
+    }
+    
+    if(head->next == NULL)
+    {
+        return head;
+    }
 
     DLLNodeBase *list1 = head;
     DLLNodeBase *list2 = dllist_middle_split(head);
@@ -501,34 +681,51 @@ static DLLNodeBase *dllist_merge_recursive(DLLNodeBase *head, int (*compare)(con
     DLLNodeBase *right = dllist_merge_recursive(list2, compare);
 
     if(left == NULL)
+    {
         return right;
+    }
     else if(right == NULL)
+    {
         return left;
+    }
 
     DLLNodeBase headNode, *tailNode = &headNode;
     while(left != NULL && right != NULL)
     {
-        if(compare(&(left->data), &(right->data)))
+        if(compare(&left->data, &right->data) <= 0)
+        {
             dllist_append_node(&tailNode, &left);
+        }
         else
+        {
             dllist_append_node(&tailNode, &right);
+        }
     }
+    
     if(left != NULL && tailNode != NULL)
+    {
         dllist_append_node(&tailNode, &left);
+    }
+    
     if(right != NULL && tailNode != NULL)
+    {
         dllist_append_node(&tailNode, &right);
+    }
     headNode.next->prev = NULL;
     return headNode.next;
 }
 
 void dllist_merge_sort(DLinkList *dllist, int (*compare)(const void*, const void*))
 {
+    DLLNodeBase *tail;
     if(dllist != NULL && compare != NULL)
     {
         dllist->head = dllist_merge_recursive(dllist->head, compare);
-        DLLNodeBase *tail = dllist->head;
+        tail = dllist->head;
         for(; tail != NULL && tail->next != NULL; tail = tail->next)
+        {
             ;
+        }
         dllist->tail = tail;
     }
 }

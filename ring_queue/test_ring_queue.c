@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
             rq_push(&RingQueue, str[i][j]);
     }
 
-    while(rq_count(&RingQueue) > 0)
+    while(rq_data_size(&RingQueue) > 0)
     {
         if(rq_read_string(&RingQueue, buff, sizeof(buff)) != NULL)
         {
